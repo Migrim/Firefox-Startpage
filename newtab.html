@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="static/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="background-circle circle1"></div>
+    <div class="background-circle circle2"></div>
+    <div class="background-circle circle3"></div>
+    <div class="background-circle circle4"></div>
+    <div class="background-circle circle5"></div>
+
+    <div class="clock-widget" id="clock-widget">
+        <div id="time"></div>
+    </div>       
+
+    <div class="moon-widget" id="moon-widget">
+        <div id="moon-phase"></div>
+    </div>    
+
+    <div class="weather-widget">
+        <div class="weather-icon">
+            <span class="material-icons skeleton-icon" id="skeleton-weather-icon"></span>
+            <span class="material-icons" id="weather-icon"></span>
+        </div>
+        <div class="weather-info">
+            <div class="temperature-container">
+                <div class="temperature skeleton-text" id="skeleton-temperature"></div>
+                <div class="temperature" id="temperature"></div>
+            </div>
+            <div class="condition-container">
+                <div class="condition skeleton-text" id="skeleton-condition"></div>
+                <div class="condition" id="condition"></div>
+            </div>
+            <div class="location-container">
+                <div class="location skeleton-text" id="skeleton-location"></div>
+                <div class="location" id="location"></div>
+            </div>
+        </div>
+    </div>   
+
+    <form id="search-form" class="search-bar">
+        <span class="material-icons">search</span>
+        <input type="text" name="q" id="search-input" placeholder="Browse the web or enter a URL">
+    </form>    
+
+    <div class="shortcuts">
+        <div class="shortcut" onclick="handleShortcutClick(event, this)">
+            <span class="material-icons">add</span>
+        </div>
+        <div class="shortcut" onclick="handleShortcutClick(event, this)">
+            <span class="material-icons">add</span>
+        </div>
+        <div class="shortcut" onclick="handleShortcutClick(event, this)">
+            <span class="material-icons">add</span>
+        </div>
+        <div class="shortcut" onclick="handleShortcutClick(event, this)">
+            <span class="material-icons">add</span>
+        </div>
+        <div class="shortcut" onclick="handleShortcutClick(event, this)">
+            <span class="material-icons">add</span>
+        </div>
+        <div class="shortcut" onclick="handleShortcutClick(event, this)">
+            <span class="material-icons">add</span>
+        </div>
+    </div>
+
+    <div class="settings-icon">
+        <span class="material-icons">settings</span>
+    </div>
+    
+    <div class="settings-modal">
+        <div class="settings-content">
+            <span class="close-modal material-icons">close</span>
+            <h2>Settings</h2>
+            <div class="option">
+                <label for="color-scheme">Color Scheme:</label>
+                <select id="color-scheme">
+                    <option value="midnight">Midnight</option>
+                    <option value="dark">Dark Mode</option>
+                    <option value="light">Light Mode</option>
+                    <option value="sunset">Sunset</option>
+                    <option value="forest">Forest</option>
+                    <option value="mystic">Mystic</option> 
+                </select>
+            </div>
+            <div class="option">
+                <label for="dot-color-option">Dot Color:</label>
+                <select id="dot-color-option">
+                    <option value="default">Default</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <input type="text" id="dot-color" class="custom-color-input" placeholder="#FFFFFF" pattern="^#[0-9A-Fa-f]{6}$" title="Enter a hex color code">
+            </div>
+            <div class="option">
+                <label for="city">Weather Widget City:</label>
+                <input type="text" id="city" placeholder="Enter city name">
+            </div>
+            <div class="option">
+                <label for="shortcut-rows">Shortcut Rows:</label>
+                <select id="shortcut-rows">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            <div class="option">
+                <label for="clock-toggle">Show Clock Widget:</label>
+                <label class="switch">
+                    <input type="checkbox" id="clock-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="option">
+                <label for="seconds-toggle">Show Seconds:</label>
+                <label class="switch">
+                    <input type="checkbox" id="seconds-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>                                 
+            <div class="credits">
+                <p>Made by Migrim</p>
+                <a href="https://one-auth.net" target="_blank" class="credits-link">one-auth.net</a>
+            </div>                     
+        </div>
+    </div>    
+    
+    <script src="script.js"></script>  
+</body>
+</html>

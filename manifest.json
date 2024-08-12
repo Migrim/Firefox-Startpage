@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "New-Tab",
+  "version": "1.0",
+  "description": "Opens a clean glassmorphism Startpage when a new tab gets created",
+  "permissions": ["tabs", "activeTab"],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "sebastian@one-auth.net",
+      "strict_min_version": "57.0"
+    }
+  }
+}
