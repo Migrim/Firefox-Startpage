@@ -1,3 +1,7 @@
+# Get it in the Firefox Addon Store
+
+https://addons.mozilla.org/de/firefox/addon/new-browsertab/
+
 # Dark Glassmorphism Startpage
 
 ![Startpage Design](image.png)
