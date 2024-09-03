@@ -1,6 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('search-form');
     const searchInput = document.getElementById('search-input');
+    const searchEngineSelect = document.getElementById('search-engine');
+
+    function updatePlaceholder() {
+        const selectedEngine = localStorage.getItem('searchEngine') || 'google';
+        const placeholderText = selectedEngine === 'google' ? 'Search with Google or enter a URL' : 'Search with DuckDuckGo or enter a URL';
+        searchInput.placeholder = placeholderText;
+    }
+
+    function getSearchUrl(query) {
+        const selectedEngine = localStorage.getItem('searchEngine') || 'google';
+        if (selectedEngine === 'google') {
+            return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        } else {
+            return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+        }
+    }
 
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -9,9 +25,21 @@ document.addEventListener('DOMContentLoaded', function() {
         if (query.match(/^https?:\/\//)) {
             window.location.href = query;
         } else {
-            window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            window.location.href = getSearchUrl(query);
         }
     });
+
+    searchEngineSelect.addEventListener('change', function() {
+        const selectedEngine = searchEngineSelect.value;
+        localStorage.setItem('searchEngine', selectedEngine);
+        updatePlaceholder();
+    });
+
+    function loadSettings() {
+        const savedEngine = localStorage.getItem('searchEngine') || 'google';
+        searchEngineSelect.value = savedEngine;
+        updatePlaceholder();
+    }
 
     const elements = document.querySelectorAll('.reveal');
     elements.forEach((el, index) => {
@@ -19,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             el.classList.add('show');
         }, index * 200); 
     });
+
     loadSettings();
 });
 
