@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('search-form');
     const searchInput = document.getElementById('search-input');
     const searchEngineSelect = document.getElementById('search-engine');
+    const urlIcon = document.getElementById('url-icon');
 
     function updatePlaceholder() {
         const selectedEngine = localStorage.getItem('searchEngine') || 'google';
@@ -29,6 +30,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.trim();
+        if (query.match(/^https?:\/\//)) {
+            urlIcon.style.display = 'inline'; // Show the icon if URL is detected
+        } else {
+            urlIcon.style.display = 'none'; // Hide the icon if it's not a URL
+        }
+    });
+
     searchEngineSelect.addEventListener('change', function() {
         const selectedEngine = searchEngineSelect.value;
         localStorage.setItem('searchEngine', selectedEngine);
@@ -40,13 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
         searchEngineSelect.value = savedEngine;
         updatePlaceholder();
     }
-
-    const elements = document.querySelectorAll('.reveal');
-    elements.forEach((el, index) => {
-        setTimeout(() => {
-            el.classList.add('show');
-        }, index * 200); 
-    });
 
     loadSettings();
 });

@@ -47,7 +47,8 @@
     <form id="search-form" class="search-bar">
         <span class="material-icons">search</span>
         <input type="text" name="q" id="search-input" placeholder="Browse the web or enter a URL">
-    </form>    
+        <span id="url-icon" class="material-icons" style="display:none;">launch</span>
+    </form>      
 
     <div class="shortcuts">
         <div class="shortcut" onclick="handleShortcutClick(event, this)">
@@ -84,8 +85,7 @@
                     <option value="google">Google</option>
                     <option value="duckduckgo">DuckDuckGo</option>
                 </select>
-            </div>
-            
+            </div>            
             <div class="option">
                 <label for="color-scheme">Color Scheme:</label>
                 <select id="color-scheme">

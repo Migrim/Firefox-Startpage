@@ -294,7 +294,6 @@ input[type="text"] {
     transform: scale(1.1) rotate(15deg);
 }
 
-
 .settings-modal {
     position: fixed;
     top: 10px;
