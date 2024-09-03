@@ -32,18 +32,15 @@ document.addEventListener('keydown', function(event) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const clockToggle = document.getElementById('clock-toggle');
-    const secondsToggle = document.getElementById('seconds-toggle');
     const clockWidget = document.getElementById('clock-widget');
     const timeElement = document.getElementById('time');
-    const secondsOption = document.querySelector('.option:nth-child(8)'); // Assuming the seconds toggle is the 8th option
 
     function updateClock() {
         const now = new Date();
         const hours = now.getHours().toString().padStart(2, '0');
         const minutes = now.getMinutes().toString().padStart(2, '0');
         const seconds = now.getSeconds().toString().padStart(2, '0');
-        const showSeconds = secondsToggle.checked;
-        timeElement.textContent = showSeconds ? `${hours}:${minutes}:${seconds}` : `${hours}:${minutes}`;
+        timeElement.textContent = `${hours}:${minutes}:${seconds}`;
     }
 
     let clockInterval;
@@ -53,11 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
             clockWidget.style.display = 'block';
             updateClock();
             clockInterval = setInterval(updateClock, 1000);
-            secondsOption.style.display = 'block'; // Show seconds option
+            setTimeout(() => {
+                clockWidget.classList.add('show'); // Add "show" class to trigger the fly-in
+            }, 50); // Small delay to ensure the widget is fully prepared for the animation
         } else {
-            clockWidget.style.display = 'none';
+            clockWidget.classList.remove('show'); // Remove the "show" class first
             clearInterval(clockInterval);
-            secondsOption.style.display = 'none'; // Hide seconds option
+            setTimeout(() => {
+                clockWidget.style.display = 'none'; // Hide after animation
+            }, 1000); // Match this timeout with your CSS transition duration
         }
     }
 
@@ -67,31 +68,26 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleClockWidget(isChecked);
     });
 
-    secondsToggle.addEventListener('change', () => {
-        localStorage.setItem('clockShowSeconds', secondsToggle.checked);
-        updateClock();
-    });
-
     const savedClockWidgetState = localStorage.getItem('clockWidgetVisible');
     if (savedClockWidgetState !== null) {
         const isVisible = JSON.parse(savedClockWidgetState);
         clockToggle.checked = isVisible;
         toggleClockWidget(isVisible);
     }
-
-    const savedClockShowSeconds = localStorage.getItem('clockShowSeconds');
-    if (savedClockShowSeconds !== null) {
-        secondsToggle.checked = JSON.parse(savedClockShowSeconds);
-    }
 });
 
-window.onload = function() {
+window.addEventListener('load', function() {
     const clockWidget = document.getElementById('clock-widget');
-    clockWidget.style.display = 'block';
-    setTimeout(() => {
-        clockWidget.classList.add('fly-in');
-    }, 100); 
-};
+    const savedClockWidgetState = localStorage.getItem('clockWidgetVisible');
+
+    if (savedClockWidgetState === null || savedClockWidgetState === 'false') {
+        clockWidget.style.display = 'none';
+    } else {
+        setTimeout(() => {
+            clockWidget.classList.add('fly-in');
+        }, 100); 
+    }
+});
 
 document.querySelector('.weather-widget').addEventListener('mouseenter', function (e) {
     const weatherWidget = e.currentTarget;
@@ -442,6 +438,7 @@ function getWeatherIcon(weather, isNight) {
         'Sunny': { day: 'clear-day.svg', night: 'clear-night.svg' },
         'Clear': { day: 'clear-day.svg', night: 'clear-night.svg' },
         'Partly Cloudy': { day: 'partly-cloudy-day.svg', night: 'partly-cloudy-night.svg' },
+        'Partly cloudy': { day: 'partly-cloudy-day.svg', night: 'partly-cloudy-night.svg' },
         'Cloudy': { day: 'cloudy.svg', night: 'cloudy.svg' },
         'Overcast': { day: 'overcast-day.svg', night: 'overcast-night.svg' },
         'Mist': { day: 'mist.svg', night: 'mist.svg' },
@@ -481,6 +478,7 @@ function getConditionDescription(condition) {
         'Sunny': 'Bright and sunny',
         'Clear': 'Clear skies',
         'Partly Cloudy': 'Partly cloudy skies',
+        'Partly cloudy': 'Partly cloudy skies',
         'Cloudy': 'Cloudy skies',
         'Overcast': 'Overcast conditions',
         'Mist': 'Misty conditions',
