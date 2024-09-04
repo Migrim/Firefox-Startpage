@@ -8,7 +8,7 @@
     "scripts": ["background.js"]
   },
   "chrome_url_overrides": {
-    "newtab": "newtab.html"
+    "newtab": "index.html"
   },
   "icons": {
     "16": "icons/icon-16.png",
