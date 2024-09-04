@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "New-Tab",
-  "version": "1.0",
+  "version": "1.8",
   "description": "Opens a clean glassmorphism Startpage when a new tab gets created",
   "permissions": ["tabs", "activeTab"],
   "background": {
