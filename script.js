@@ -308,16 +308,19 @@ document.querySelector('.weather-widget').addEventListener('mouseenter', functio
     weatherWidget.addEventListener('mousemove', tilt);
     weatherWidget.addEventListener('mouseleave', resetTilt);
 });
-
 function saveShortcut(element) {
-    let shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
-    let oldUrl = element.getAttribute('data-old-url');
+    const shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+    const oldUrl = element.getAttribute('data-old-url');
     if (oldUrl && shortcuts[oldUrl]) {
         delete shortcuts[oldUrl];
     }
-    let newUrl = element.getAttribute('data-url');
-    newUrl = normalizeUrl(newUrl); 
-    let favicon = element.querySelector('img').src;
+
+    const newUrl = element.getAttribute('data-url');
+    if (newUrl.trim() === '') {
+        return; 
+    }
+
+    const favicon = element.querySelector('img') ? element.querySelector('img').src : '';
     shortcuts[newUrl] = favicon;
     localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
 }
@@ -392,26 +395,29 @@ function handleShortcutClick(event, element) {
         let newUrl = prompt("Enter the new URL:", url);
         if (newUrl) {
             newUrl = normalizeUrl(newUrl); 
-            let faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain_url=${newUrl}`;
-            element.innerHTML = `<img src="${faviconUrl}" alt="favicon" width="32" height="32">`;
-            element.setAttribute('data-old-url', url); 
-            element.setAttribute('data-url', newUrl);
-            saveShortcut(element);
+            if (newUrl) { 
+                let faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain_url=${newUrl}`;
+                element.innerHTML = `<img src="${faviconUrl}" alt="favicon" width="32" height="32">`;
+                element.setAttribute('data-old-url', url); 
+                element.setAttribute('data-url', newUrl);
+                saveShortcut(element);
+            }
         }
     } else if (url) {
         window.location.href = url;
     } else {
         let newUrl = prompt("Enter the URL:");
         if (newUrl) {
-            newUrl = normalizeUrl(newUrl); 
-            let faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain_url=${newUrl}`;
-            element.innerHTML = `<img src="${faviconUrl}" alt="favicon" width="32" height="32">`;
-            element.setAttribute('data-url', newUrl); 
-            saveShortcut(element);  
+            newUrl = normalizeUrl(newUrl);
+            if (newUrl) { 
+                let faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain_url=${newUrl}`;
+                element.innerHTML = `<img src="${faviconUrl}" alt="favicon" width="32" height="32">`;
+                element.setAttribute('data-url', newUrl); 
+                saveShortcut(element);
+            }
         }
     }
 }
-
 document.querySelector('.settings-icon').addEventListener('click', function() {
     document.querySelector('.settings-modal').classList.toggle('show');
 });
@@ -806,3 +812,92 @@ window.addEventListener('resize', function() {
         tooltip.style.display = 'none';
     });
 });
+document.addEventListener('DOMContentLoaded', function () {
+    const container = document.querySelector('.shortcuts');
+    const contextMenu = document.createElement('div');
+    contextMenu.classList.add('custom-context-menu');
+    contextMenu.innerHTML = `
+        <ul>
+            <li id="edit-shortcut">Edit</li>
+            <li id="delete-shortcut">Delete</li>
+        </ul>
+    `;
+    document.body.appendChild(contextMenu);
+
+    let currentShortcut = null;
+
+    container.addEventListener('contextmenu', function (event) {
+        event.preventDefault();
+
+        const shortcut = event.target.closest('.shortcut');
+        if (shortcut) {
+            currentShortcut = shortcut;
+
+            contextMenu.style.left = `${event.pageX}px`;
+            contextMenu.style.top = `${event.pageY}px`;
+            contextMenu.style.display = 'block';
+        }
+    });
+
+    document.getElementById('edit-shortcut').addEventListener('click', function () {
+        if (currentShortcut) {
+            const url = currentShortcut.getAttribute('data-url');
+            const newUrl = prompt('Edit URL:', url);
+
+            if (newUrl !== null) {
+                const normalizedUrl = normalizeUrl(newUrl); 
+                currentShortcut.setAttribute('data-url', normalizedUrl);
+                currentShortcut.innerHTML = `<img src="https://www.google.com/s2/favicons?sz=64&domain_url=${normalizedUrl}" alt="favicon" width="32" height="32">`;
+                saveShortcut(currentShortcut); 
+            }
+
+            contextMenu.style.display = 'none'; 
+        }
+    });
+
+    document.getElementById('delete-shortcut').addEventListener('click', function () {
+        if (currentShortcut) {
+            currentShortcut.setAttribute('data-url', ''); 
+            currentShortcut.innerHTML = `<span class="material-icons">add</span>`; 
+            saveShortcut(currentShortcut); 
+
+            contextMenu.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', function () {
+        contextMenu.style.display = 'none';
+    });
+});
+
+function normalizeUrl(url) {
+    const invalidCharacters = /[\s<>]/g;
+
+    if (url.trim() === '' || invalidCharacters.test(url)) {
+        alert('The URL contains invalid characters.');
+        return '';
+    }
+    
+    if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+    }
+
+    return url;
+}
+
+function saveShortcut(element) {
+    const shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || {};
+    const oldUrl = element.getAttribute('data-old-url');
+    if (oldUrl && shortcuts[oldUrl]) {
+        delete shortcuts[oldUrl];
+    }
+
+    const newUrl = element.getAttribute('data-url');
+    const favicon = newUrl ? element.querySelector('img')?.src || '' : ''; 
+
+    if (newUrl.trim() !== '') {
+        shortcuts[newUrl] = favicon; 
+    }
+
+    localStorage.setItem('shortcuts', JSON.stringify(shortcuts)); 
+}
