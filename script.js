@@ -33,9 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', function() {
         const query = searchInput.value.trim();
         if (query.match(/^https?:\/\//)) {
-            urlIcon.style.display = 'inline'; // Show the icon if URL is detected
+            urlIcon.style.display = 'inline'; 
         } else {
-            urlIcon.style.display = 'none'; // Hide the icon if it's not a URL
+            urlIcon.style.display = 'none'; 
         }
     });
 
@@ -83,14 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
             updateClock();
             clockInterval = setInterval(updateClock, 1000);
             setTimeout(() => {
-                clockWidget.classList.add('show'); // Add "show" class to trigger the fly-in
-            }, 50); // Small delay to ensure the widget is fully prepared for the animation
+                clockWidget.classList.add('show'); 
+            }, 50); 
         } else {
-            clockWidget.classList.remove('show'); // Remove the "show" class first
+            clockWidget.classList.remove('show'); 
             clearInterval(clockInterval);
             setTimeout(() => {
-                clockWidget.style.display = 'none'; // Hide after animation
-            }, 1000); // Match this timeout with your CSS transition duration
+                clockWidget.style.display = 'none'; 
+            }, 1000);  
         }
     }
 
@@ -475,14 +475,17 @@ function getWeatherIcon(weather, isNight) {
         'Overcast': { day: 'overcast-day.svg', night: 'overcast-night.svg' },
         'Mist': { day: 'mist.svg', night: 'mist.svg' },
         'Light rain shower': { day: 'partly-cloudy-day-rain.svg', night: 'partly-cloudy-night-rain.svg' },
+        'Light rain': { day: 'partly-cloudy-day-rain.svg', night: 'partly-cloudy-night-rain.svg' },
         'Patchy rain nearby': { day: 'partly-cloudy-day-drizzle.svg', night: 'partly-cloudy-night-drizzle.svg' },
         'Patchy light rain': { day: 'partly-cloudy-day-drizzle.svg', night: 'partly-cloudy-night-drizzle.svg' },
         'Light drizzle': { day: 'partly-cloudy-day-drizzle.svg', night: 'partly-cloudy-night-drizzle.svg' },
         'Rain': { day: 'rain.svg', night: 'rain.svg' },
         'Moderate rain': { day: 'rain.svg', night: 'rain.svg' },
         'Moderate or heavy rain shower': { day: 'rain.svg', night: 'rain.svg' },
+        'Moderate or heavy rain with thunder': { day: 'thunderstorms-day-rain.svg', night: 'thunderstorms-night-rain.svg' },
         'Thunderstorm': { day: 'thunderstorms-day-extreme-rain.svg', night: 'thunderstorms-night-extreme-rain.svg' },
         'Thundery outbreaks in nearby': { day: 'thunderstorms-day.svg', night: 'thunderstorms-night.svg' },
+        'Thundery outbreaks possible': { day: 'thunderstorms-day.svg', night: 'thunderstorms-night.svg' },
         'Patchy light rain in area with thunder': { day: 'thunderstorms-day-rain.svg', night: 'thunderstorms-night-rain.svg' },
         'Snow': { day: 'snow.svg', night: 'snow.svg' },
         'Sleet': { day: 'sleet.svg', night: 'sleet.svg' },
@@ -518,13 +521,16 @@ function getConditionDescription(condition) {
         'Patchy rain nearby': 'Intermittent rain in the vicinity',
         'Patchy light rain': 'Patchy light rain',
         'Light Rain': 'Light rain',
+        'Light rain': 'Light rain',
         'Moderate rain': 'Moderate Rain',
         'Light drizzle': 'Light drizzle',
         'Moderate Rain': 'Moderate rain',
         'Heavy Rain': 'Heavy rain',
         'Moderate or heavy rain shower': 'Moderate to heavy rain showers',
+        'Moderate or heavy rain with thunder': 'Moderate to heavy rain with thunder',
         'Thunderstorm': 'Thunderstorms in the area',
         'Thundery outbreaks in nearby': 'Thunderstorms nearby',
+        'Thundery outbreaks possible': 'Possible nearby thunderstorms',
         'Patchy light rain in area with thunder': 'Light rain and thunder nearby',
         'Snow': 'Snowfall',
         'Sleet': 'Sleet showers',
@@ -534,7 +540,7 @@ function getConditionDescription(condition) {
         'Ice Pellets': 'Ice pellets falling',
         'Other': 'Unpredictable weather'
     };    
-    return conditionMap[condition] || `Weather condition unknown: ${condition}`;
+    return conditionMap[condition] || `API: ${condition}`;
 }
 
 function showWeatherData() {
