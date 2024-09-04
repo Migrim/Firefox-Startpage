@@ -613,5 +613,5 @@ input:checked + .slider:before {
 }
 
 .custom-context-menu ul li:hover {
-    color: #444444;
+    color: #bebebe;
 }
