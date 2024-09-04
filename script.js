@@ -62,6 +62,170 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const dateWidget = document.getElementById('date-widget');
+    
+    const tooltip = document.createElement('div');
+    tooltip.classList.add('custom-tooltip');
+    document.body.appendChild(tooltip);
+
+    function getOrdinalSuffix(day) {
+        if (day > 3 && day < 21) return 'th'; 
+        switch (day % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+        }
+    }
+
+    function updateDateWidget() {
+        const now = new Date();
+        const day = now.getDate();
+        const month = now.getMonth();
+
+        const monthEmojis = [
+            '❄️', '⛄', '🌸', '🌷', '☀️', '🍉', '🌈', '🌻', '🍂', '🎃', '🍁', '🎄'
+        ];
+
+        const specialDays = {
+            '1-1': { emoji: '🎆', description: "New Year's Day" },
+            '1-15': { emoji: '🍕', description: "National Pizza Day" },
+            '1-21': { emoji: '🦸‍♂️', description: "National Hugging Day" },
+            '1-27': { emoji: '🕯️', description: "Holocaust Remembrance Day" },
+            '2-2': { emoji: '🦫', description: "Groundhog Day" },
+            '2-14': { emoji: '💖', description: "Valentine's Day" },
+            '2-20': { emoji: '⚖️', description: "World Day of Social Justice" },
+            '3-8': { emoji: '🌷', description: "International Women's Day" },
+            '3-14': { emoji: '🥧', description: "Pi Day" },
+            '3-20': { emoji: '🌸', description: "Spring Equinox" },
+            '3-21': { emoji: '🌈', description: "International Day for the Elimination of Racial Discrimination" },
+            '3-31': { emoji: '🏳️‍⚧️', description: "International Transgender Day of Visibility" },
+            '4-1': { emoji: '🤡', description: "April Fool's Day" },
+            '4-7': { emoji: '🏥', description: "World Health Day" },
+            '4-22': { emoji: '🌎', description: "Earth Day" },
+            '5-1': { emoji: '⚒️', description: "International Workers' Day" },
+            '5-4': { emoji: '⭐', description: "Star Wars Day" },
+            '5-17': { emoji: '🏳️‍🌈', description: "International Day Against Homophobia, Transphobia and Biphobia" },
+            '5-25': { emoji: '🚀', description: "Geek Pride Day" },
+            '6-5': { emoji: '🌍', description: "World Environment Day" },
+            '6-18': { emoji: '🧀', description: "International Sushi Day" },
+            '6-20': { emoji: '🆘', description: "World Refugee Day" },
+            '6-21': { emoji: '🌞', description: "Summer Solstice" },
+            '6-28': { emoji: '🏳️‍🌈', description: "Stonewall Riots Anniversary" },
+            '7-6': { emoji: '🍫', description: "World Chocolate Day" },
+            '7-16': { emoji: '🎗️', description: "International Drag Day" },
+            '7-18': { emoji: '✊', description: "Nelson Mandela International Day" },
+            '7-20': { emoji: '🍦', description: "National Ice Cream Day" },
+            '7-30': { emoji: '🤝', description: "International Day of Friendship" },
+            '8-12': { emoji: '👧', description: "International Youth Day" },
+            '8-19': { emoji: '👐', description: "World Humanitarian Day" },
+            '9-5': { emoji: '📚', description: "International Day of Charity" },
+            '9-13': { emoji: '👩‍💻', description: "Programmer's Day" }, 
+            '9-19': { emoji: '🏴‍☠️', description: "Talk Like a Pirate Day" },
+            '9-21': { emoji: '🕊️', description: "International Day of Peace" },
+            '9-23': { emoji: '💜', description: "Bisexual Visibility Day" },
+            '10-1': { emoji: '🎶', description: "International Music Day" },
+            '10-4': { emoji: '🐶', description: "World Animal Day" },
+            '10-5': { emoji: '👩‍🏫', description: "World Teachers' Day" },
+            '10-8': { emoji: '🏳️‍🌈', description: "International Lesbian Day" },
+            '10-10': { emoji: '🧠', description: "World Mental Health Day" },
+            '10-11': { emoji: '🏳️‍🌈', description: "National Coming Out Day" },
+            '10-16': { emoji: '🥖', description: "World Food Day" },
+            '10-31': { emoji: '🎃', description: "Halloween" },
+            '11-11': { emoji: '🕊️', description: "Armistice Day / Remembrance Day" },
+            '11-19': { emoji: '👨', description: "International Men's Day" },
+            '11-20': { emoji: '🏳️‍⚧️', description: "Transgender Day of Remembrance" },
+            '11-25': { emoji: '🧡', description: "International Day for the Elimination of Violence Against Women" },
+            '12-1': { emoji: '🎗️', description: "World AIDS Day" },
+            '12-3': { emoji: '♿', description: "International Day of Persons with Disabilities" },
+            '12-10': { emoji: '🕊️', description: "Human Rights Day" },
+            '12-11': { emoji: '🏞️', description: "International Mountain Day" },
+            '12-15': { emoji: '🎅', description: "National Ugly Sweater Day" },
+            '12-24': { emoji: '🎅', description: "Christmas Eve" },
+            '12-25': { emoji: '🎅', description: "Christmas Day" },
+            '12-31': { emoji: '🎆', description: "New Year's Eve" },
+            '12-10': { emoji: '📟', description: "World Computer Literacy Day" },
+            '12-12': { emoji: '👩‍💻', description: "International Day of Code" } 
+        };                    
+
+        const todayKey = `${month + 1}-${day}`;
+        const specialDay = specialDays[todayKey];
+        const emoji = specialDay ? specialDay.emoji : monthEmojis[month];
+
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June', 
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        const ordinalSuffix = getOrdinalSuffix(day); 
+        const formattedDate = `${day}${ordinalSuffix} of ${monthNames[month]} ${emoji}`;
+        dateWidget.textContent = formattedDate;
+
+        const tooltipText = specialDay 
+            ? `Today is ${specialDay.description}! (${formattedDate})` 
+            : `Today is ${formattedDate}`;
+
+        tooltip.textContent = tooltipText;
+    }
+
+    updateDateWidget();
+
+    dateWidget.addEventListener('mouseenter', function() {
+        tooltip.style.display = 'block';
+        tooltip.classList.add('show');
+    });
+
+    dateWidget.addEventListener('mousemove', function(e) {
+        const xOffset = 10;
+        const yOffset = 10;
+        tooltip.style.left = `${e.pageX + xOffset}px`;
+        tooltip.style.top = `${e.pageY + yOffset}px`;
+    });
+
+    dateWidget.addEventListener('mouseleave', function() {
+        tooltip.style.display = 'none';
+        tooltip.classList.remove('show');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const dateToggle = document.getElementById('date-toggle');
+    const dateWidget = document.getElementById('date-widget');
+    const clockWidget = document.getElementById('clock-widget');
+
+    function toggleDateWidget(isVisible) {
+        if (isVisible) {
+            dateWidget.style.display = 'block';
+            setTimeout(() => {
+                dateWidget.classList.add('show'); 
+            }, 50); 
+            clockWidget.style.top = '80px'; 
+        } else {
+            dateWidget.classList.remove('show');
+            setTimeout(() => {
+                dateWidget.style.display = 'none'; 
+            }, 1000);
+
+            setTimeout(() => {
+                clockWidget.style.top = '20px';
+            }, 1000); 
+        }
+    }
+
+    dateToggle.addEventListener('change', () => {
+        const isChecked = dateToggle.checked;
+        localStorage.setItem('dateWidgetVisible', isChecked);
+        toggleDateWidget(isChecked);
+    });
+
+    const savedDateWidgetState = localStorage.getItem('dateWidgetVisible');
+    if (savedDateWidgetState !== null) {
+        const isVisible = JSON.parse(savedDateWidgetState);
+        dateToggle.checked = isVisible;
+        toggleDateWidget(isVisible);
+    }
+});
 document.addEventListener('DOMContentLoaded', () => {
     const clockToggle = document.getElementById('clock-toggle');
     const clockWidget = document.getElementById('clock-widget');

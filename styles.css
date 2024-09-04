@@ -465,7 +465,7 @@ input[type="text"] {
     text-decoration: underline;
 }
 .clock-widget {
-    display: none; /* Start as hidden */
+    display: none;
     background: rgba(20, 20, 20, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.027);
     border-radius: 15px;
@@ -477,7 +477,7 @@ input[type="text"] {
     font-size: 24px;
     text-align: center;
     position: fixed;
-    top: 20px;
+    top: 80px; /* Default position below the date widget */
     left: 20px;
     z-index: 2;
     opacity: 0;
@@ -486,7 +486,7 @@ input[type="text"] {
 }
 
 .clock-widget.show {
-    display: block; /* Only show when the class "show" is added */
+    display: block;
     opacity: 1;
     transform: translateX(0);
 }
@@ -543,3 +543,50 @@ input:checked + .slider {
 input:checked + .slider:before {
     transform: translate(26px, -50%);
 }
+.date-widget {
+    background: rgba(20, 20, 20, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.027);
+    border-radius: 15px;
+    padding: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 10px rgba(20, 20, 20, 0.4);
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    text-align: center;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+    opacity: 0; 
+    transform: translateX(-100%); 
+    transition: opacity 1s ease, transform 1s ease; 
+}
+
+.date-widget.show {
+    display: block;
+    opacity: 1; 
+    transform: translateX(0); 
+}
+.custom-tooltip {
+    position: absolute;
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 14px;
+    z-index: 100; 
+    display: none;
+    white-space: nowrap;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.custom-tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
