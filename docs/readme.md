@@ -1,6 +1,6 @@
 # Get it in the Firefox Addon Store
 
-https://addons.mozilla.org/de/firefox/addon/new-browsertab/
+[![Addon Link](https://img.shields.io/badge/Get%20the%20Addon-Firefox-brightgreen)](https://addons.mozilla.org/de/firefox/addon/new-browsertab/)
 
 # Dark Glassmorphism Startpage
 
