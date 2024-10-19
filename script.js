@@ -391,20 +391,12 @@ document.getElementById('shortcut-rows').addEventListener('change', function() {
 
 function handleShortcutClick(event, element) {
     let url = element.getAttribute('data-url');
-    if (url && event.shiftKey) {
-        let newUrl = prompt("Enter the new URL:", url);
-        if (newUrl) {
-            newUrl = normalizeUrl(newUrl); 
-            if (newUrl) { 
-                let faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain_url=${newUrl}`;
-                element.innerHTML = `<img src="${faviconUrl}" alt="favicon" width="32" height="32">`;
-                element.setAttribute('data-old-url', url); 
-                element.setAttribute('data-url', newUrl);
-                saveShortcut(element);
-            }
+    if (url) {
+        if (event.button === 1 || event.ctrlKey) {
+            window.open(url, '_blank');
+        } else {
+            window.location.href = url;
         }
-    } else if (url) {
-        window.location.href = url;
     } else {
         let newUrl = prompt("Enter the URL:");
         if (newUrl) {
@@ -418,6 +410,13 @@ function handleShortcutClick(event, element) {
         }
     }
 }
+
+document.querySelectorAll('.shortcut').forEach(element => {
+    element.addEventListener('mousedown', function(event) {
+        handleShortcutClick(event, element);
+    });
+});
+
 document.querySelector('.settings-icon').addEventListener('click', function() {
     document.querySelector('.settings-modal').classList.toggle('show');
 });
