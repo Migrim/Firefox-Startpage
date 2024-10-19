@@ -615,3 +615,76 @@ input:checked + .slider:before {
 .custom-context-menu ul li:hover {
     color: #bebebe;
 }
+.notification .version-title {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.notification {
+    display: none; 
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(20, 20, 20, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.027);
+    border-radius: 10px;
+    padding: 10px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 6px rgba(20, 20, 20, 0.5);
+    color: white;
+    z-index: 100;
+    width: 300px;
+    font-size: 12px;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+    position: fixed !important;
+    transition: background 0.3s ease, border 0.3s ease;
+}
+
+.notification:hover {
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.notification ul {
+    margin-top: 8px;
+    padding-left: 15px;
+    list-style-type: disc;
+}
+
+.notification button {
+    background: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+.notification button {
+    background: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    transition: color 0.3s ease;
+}
+
+.notification button:hover::after {
+    background: rgba(30, 30, 30, 0.7);  
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    border-radius: 10px;
+    padding: 5px;
+    content: "Don't show again"; 
+    font-size: 12px;
+    color: white;
+    position: absolute;
+    top: -35px; 
+    right: -10px;
+    white-space: nowrap;
+}

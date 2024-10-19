@@ -55,12 +55,56 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('keydown', function(event) {
-    var searchInput = document.getElementById('search-input');
+    const searchInput = document.getElementById('search-input');
 
     if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-        searchInput.focus();
+        if ((event.altKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+            event.preventDefault();
+            searchInput.focus();
+        }
+
+        if ((event.metaKey || event.altKey) && event.key.toLowerCase() === 'k') {
+            event.preventDefault();
+            searchInput.focus();
+        }
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const currentVersion = '1.9'; // Current version
+    const storedVersion = localStorage.getItem('version');
+
+    const notification = document.getElementById('version-notification');
+    const closeNotification = document.getElementById('close-notification');
+
+    function isNewerVersion(stored, current) {
+        if (!stored) return true;  
+
+        const storedParts = stored.split('.').map(Number);
+        const currentParts = current.split('.').map(Number);
+
+        for (let i = 0; i < Math.max(storedParts.length, currentParts.length); i++) {
+            const storedPart = storedParts[i] || 0;
+            const currentPart = currentParts[i] || 0;
+            if (currentPart > storedPart) return true;
+            if (currentPart < storedPart) return false;
+        }
+        return false;
+    }
+
+
+    if (!storedVersion || isNewerVersion(storedVersion, currentVersion)) {
+        notification.style.display = 'flex';  
+    } else {
+        notification.style.display = 'none';  
+    }
+
+    closeNotification.addEventListener('click', function() {
+        notification.style.display = 'none';  
+        localStorage.setItem('version', currentVersion); 
+        console.log(`Version ${currentVersion} stored in localStorage.`);
+    });
+})
 
 document.addEventListener('DOMContentLoaded', function() {
     const dateWidget = document.getElementById('date-widget');
