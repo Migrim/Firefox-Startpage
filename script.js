@@ -392,7 +392,7 @@ document.getElementById('shortcut-rows').addEventListener('change', function() {
 function handleShortcutClick(event, element) {
     let url = element.getAttribute('data-url');
     if (url) {
-        if (event.button === 1 || event.ctrlKey) {
+        if (event.button === 1 || event.ctrlKey || event.metaKey) {
             window.open(url, '_blank');
         } else {
             window.location.href = url;
@@ -817,6 +817,7 @@ document.addEventListener('DOMContentLoaded', function () {
     contextMenu.classList.add('custom-context-menu');
     contextMenu.innerHTML = `
         <ul>
+            <li id="open-in-new-tab" style="display: none;">New Tab</li>
             <li id="edit-shortcut">Edit</li>
             <li id="delete-shortcut">Delete</li>
         </ul>
@@ -832,9 +833,26 @@ document.addEventListener('DOMContentLoaded', function () {
         if (shortcut) {
             currentShortcut = shortcut;
 
+            const openInNewTabItem = document.getElementById('open-in-new-tab');
+            if (shortcut.getAttribute('data-url')) {
+                openInNewTabItem.style.display = 'block';
+            } else {
+                openInNewTabItem.style.display = 'none';
+            }
+
             contextMenu.style.left = `${event.pageX}px`;
             contextMenu.style.top = `${event.pageY}px`;
             contextMenu.style.display = 'block';
+        }
+    });
+
+    document.getElementById('open-in-new-tab').addEventListener('click', function () {
+        if (currentShortcut) {
+            const url = currentShortcut.getAttribute('data-url');
+            if (url) {
+                window.open(url, '_blank');
+            }
+            contextMenu.style.display = 'none'; 
         }
     });
 
@@ -844,10 +862,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const newUrl = prompt('Edit URL:', url);
 
             if (newUrl !== null) {
-                const normalizedUrl = normalizeUrl(newUrl); 
+                const normalizedUrl = normalizeUrl(newUrl);
                 currentShortcut.setAttribute('data-url', normalizedUrl);
                 currentShortcut.innerHTML = `<img src="https://www.google.com/s2/favicons?sz=64&domain_url=${normalizedUrl}" alt="favicon" width="32" height="32">`;
-                saveShortcut(currentShortcut); 
+                saveShortcut(currentShortcut);
             }
 
             contextMenu.style.display = 'none'; 
@@ -856,11 +874,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('delete-shortcut').addEventListener('click', function () {
         if (currentShortcut) {
-            currentShortcut.setAttribute('data-url', ''); 
-            currentShortcut.innerHTML = `<span class="material-icons">add</span>`; 
-            saveShortcut(currentShortcut); 
+            currentShortcut.setAttribute('data-url', '');
+            currentShortcut.innerHTML = `<span class="material-icons">add</span>`;
+            saveShortcut(currentShortcut);
 
-            contextMenu.style.display = 'none';
+            contextMenu.style.display = 'none'; 
         }
     });
 
