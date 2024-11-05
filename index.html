@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="static/favicon.ico" type="image/x-icon">
 </head>
@@ -139,6 +140,34 @@
         </div>
     </div>    
     
+    <div class="quick-notes-wrapper" id="quick-notes-wrapper">
+        <div class="quick-notes-button" id="quick-notes-button">
+            <span class="material-icons" id="notes-icon">note_add</span>
+            <input type="text" id="new-note-input" placeholder="Add a new note..." style="display: none;" />
+        </div>
+    </div>
+    
+    <div class="quick-notes-modal" id="quick-notes-modal">
+        <button id="undo-delete" style="
+            display: none; 
+            position: absolute; 
+            top: 5px; 
+            right: 5px; 
+            color: white; 
+            background: rgba(20, 20, 20, 0.5); 
+            border: none; 
+            cursor: pointer; 
+            font-size: 14px; /* Smaller font size */
+            padding: 3px; /* Smaller padding */
+            border-radius: 50%; 
+            opacity: 0.7; 
+            transition: opacity 0.3s ease;
+        ">
+            <i class="fas fa-undo"></i>
+        </button>
+        <div id="quick-notes-container"></div>
+    </div>
+
     <div class="notification" id="version-notification">
         <span class="version-title">✨ Version 1.9 ✨</span><br>
         <span>Patch Notes:

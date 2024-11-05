@@ -962,3 +962,141 @@ function saveShortcut(element) {
 
     localStorage.setItem('shortcuts', JSON.stringify(shortcuts)); 
 }
+document.addEventListener('DOMContentLoaded', function() {
+    const quickNotesButton = document.getElementById('quick-notes-button');
+    const quickNotesWrapper = document.getElementById('quick-notes-wrapper');
+    const newNoteInput = document.getElementById('new-note-input');
+    const notesIcon = document.getElementById('notes-icon');
+    const quickNotesModal = document.getElementById('quick-notes-modal');
+    const quickNotesContainer = document.getElementById('quick-notes-container');
+    const undoButton = document.getElementById('undo-delete');
+    let undoTimeout = null;
+    let lastDeletedNote = null;
+
+    function toggleModalVisibility() {
+        if (quickNotesContainer.children.length > 0 && quickNotesWrapper.classList.contains('expanded')) {
+            quickNotesModal.style.display = 'block';
+        } else {
+            quickNotesModal.style.display = 'none';
+        }
+    }
+
+    quickNotesButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        quickNotesWrapper.classList.toggle('expanded'); 
+        if (quickNotesWrapper.classList.contains('expanded')) {
+            notesIcon.style.display = 'none';
+            newNoteInput.style.display = 'block';
+            newNoteInput.focus();
+        } else {
+            notesIcon.style.display = 'block';
+            newNoteInput.style.display = 'none';
+        }
+        toggleModalVisibility(); 
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!quickNotesModal.contains(event.target) && !quickNotesWrapper.contains(event.target)) {
+            quickNotesWrapper.classList.remove('expanded');
+            notesIcon.style.display = 'block';
+            newNoteInput.style.display = 'none';
+            toggleModalVisibility(); 
+        }
+    });
+
+    // Prevent modal from closing when clicking on the input
+    newNoteInput.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'n') {
+            event.preventDefault();
+            quickNotesWrapper.classList.add('expanded');
+            notesIcon.style.display = 'none';
+            newNoteInput.style.display = 'block';
+            newNoteInput.focus();
+            toggleModalVisibility(); 
+        }
+        
+        if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
+            event.preventDefault();
+            undoLastDeletion();
+        }
+    });
+
+    newNoteInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && newNoteInput.value.trim() !== '') {
+            addNote(newNoteInput.value.trim());
+            newNoteInput.value = '';
+        }
+    });
+
+    function addNote(text) {
+        const noteItem = document.createElement('div');
+        noteItem.classList.add('quick-note-item');
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+
+        const label = document.createElement('label');
+        label.textContent = text;
+
+        noteItem.appendChild(checkbox);
+        noteItem.appendChild(label);
+        quickNotesContainer.appendChild(noteItem);
+
+        toggleModalVisibility(); 
+
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                label.style.textDecoration = 'line-through';
+                label.style.color = '#888';
+
+                undoTimeout = setTimeout(() => deleteNoteWithUndo(noteItem), 3000);
+            } else {
+                label.style.textDecoration = 'none';
+                label.style.color = 'white';
+                if (undoTimeout) clearTimeout(undoTimeout);
+            }
+            newNoteInput.focus(); 
+        });
+    }
+
+    function deleteNoteWithUndo(noteItem) {
+        if (undoTimeout) clearTimeout(undoTimeout);
+
+        lastDeletedNote = noteItem;
+
+        noteItem.classList.add('fade-out');
+
+        setTimeout(() => {
+            noteItem.style.display = 'none';
+            noteItem.classList.remove('fade-out');
+        }, 2000); 
+
+        undoButton.style.display = 'block';
+    }
+
+    function undoLastDeletion() {
+        if (lastDeletedNote) {
+            if (undoTimeout) clearTimeout(undoTimeout);
+
+            lastDeletedNote.style.display = 'flex';
+            lastDeletedNote.classList.remove('fade-out');
+
+            const checkbox = lastDeletedNote.querySelector('input[type="checkbox"]');
+            const label = lastDeletedNote.querySelector('label');
+
+            checkbox.checked = false;
+            label.style.textDecoration = 'none';
+            label.style.color = 'white';
+
+            lastDeletedNote = null; 
+            undoButton.style.display = 'none'; 
+            toggleModalVisibility();
+        }
+    }
+
+    undoButton.addEventListener('click', undoLastDeletion);
+});
