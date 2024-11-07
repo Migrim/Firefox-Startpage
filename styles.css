@@ -693,12 +693,12 @@ input:checked + .slider:before {
     bottom: 20px;
     left: 20px;
     z-index: 100;
-    width: 40px; /* Initial width */
+    width: 40px; 
     transition: width 0.3s ease;
 }
 
 .quick-notes-wrapper.expanded {
-    width: 250px; /* Expanded width */
+    width: 250px;
 }
 
 .quick-notes-button {
@@ -714,8 +714,8 @@ input:checked + .slider:before {
     border-radius: 12px;
     transition: background 0.3s ease;
     position: relative;
-    overflow: hidden; /* Clips the content to avoid overflow */
-    padding: 0 10px; /* Padding to ensure centered icon and smooth input display */
+    overflow: hidden; 
+    padding: 0 10px;
 }
 
 .quick-notes-button:hover {
@@ -726,27 +726,27 @@ input:checked + .slider:before {
     font-size: 24px;
     color: #ffffffb3;
     transition: opacity 0.3s ease;
-    margin: 0 auto; /* Center the icon horizontally */
+    margin: 0 auto; 
 }
 
 #new-note-input {
-    display: none; /* Initially hidden */
-    flex: 1; /* Takes up full width within the button when displayed */
+    display: none; 
+    flex: 1; 
     padding: 10px;
     background: rgba(255, 255, 255, 0.08);
-    border: none; /* Remove inner border to match button */
+    border: none; 
     color: white;
     font-size: 14px;
     transition: opacity 0.3s ease;
-    border-radius: 8px; /* Matches button border radius */
+    border-radius: 8px; 
 }
 
 .quick-notes-wrapper.expanded #notes-icon {
-    opacity: 0; /* Hide icon when expanded */
+    opacity: 0;
 }
 
 .quick-notes-wrapper.expanded #new-note-input {
-    display: block; /* Show input when expanded */
+    display: block; 
     opacity: 1;
 }
 @keyframes slideUpFadeIn {
@@ -762,34 +762,55 @@ input:checked + .slider:before {
 
 .quick-notes-modal {
     position: fixed;
-    bottom: 80px; /* Position above the button */
+    bottom: 80px; 
     left: 20px;
     width: 250px;
-    max-height: 200px; /* Set max height to avoid overflow */
-    min-height: 40px;
+    max-height: 400px; 
+    min-height: 20px;
     overflow-y: auto;
     background: rgba(20, 20, 20, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.027);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 10px;
-    display: none; /* Initially hidden */
+    display: none; 
     z-index: 101;
-    animation: slideUpFadeIn 0.3s ease; /* Apply animation */
+    animation: slideUpFadeIn 0.3s ease; 
 }
 
 .quick-note-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 0;
+    padding: 0px 0;
+    margin-bottom: 8px;
     animation: slideUpFadeIn 0.3s ease;
 }
 
+.quick-note-item:last-child {
+    margin-bottom: 0;
+}
+.pin-button {
+    display: none;
+    background: rgba(255, 255, 255, 0);
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 1px;
+    margin-left: 8px; 
+    transition: background 0.3s;
+}
+
+.quick-note-item:hover .pin-button {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0); 
+}
 .quick-note-item input[type="checkbox"] {
     appearance: none;
     width: 20px;
     height: 20px;
+    min-width: 20px; 
+    max-width: 20px;
     margin-right: 10px;
     border: 2px solid white;
     border-radius: 6px;
@@ -799,7 +820,6 @@ input:checked + .slider:before {
     position: relative;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
-
 .quick-note-item input[type="checkbox"]::before {
     content: '';
     position: absolute;
@@ -823,11 +843,12 @@ input:checked + .slider:before {
     color: white;
     flex: 1;
     margin: 0;
-    white-space: normal; /* Allows text to wrap */
-    word-wrap: break-word; /* Breaks words if they are too long */
+    white-space: normal; 
+    word-wrap: break-word; 
+    font-size: 0.9em; 
 }
 .quick-note-item:hover label {
-    color: #ccc; /* Change this to your desired hover color */
+    color: #ccc; 
 }
 .quick-note-item.fade-out {
     animation: fadeOutAnimation 2s forwards;
@@ -840,4 +861,182 @@ input:checked + .slider:before {
     to {
         opacity: 0;
     }
+}
+#pinned-messages-container {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    text-align: left; /* Align text to the left */
+    max-width: 500px; /* Default max width for the container */
+    overflow: hidden; /* Hide overflow */
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#pinned-messages-container .pinned-note {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 1rem;
+    text-align: left;
+    background: rgba(20, 20, 20, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.027);
+    border-radius: 15px;
+    padding: 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 10px rgba(20, 20, 20, 0.4);
+    max-width: 100%; /* Allow note to fill container */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis */
+}
+
+#pinned-messages-container .pinned-note .emoji-selector {
+    margin-right: 5px; 
+}
+
+/* Media query for fullscreen width */
+@media (min-width: 1200px) {
+    #pinned-messages-container {
+        max-width: 900px; /* Max width when in fullscreen */
+    }
+}
+.emoji-menu {
+    position: absolute;
+    background: rgba(20, 20, 20, 0.5);
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 10px rgba(20, 20, 20, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.027);
+}
+
+.emoji-menu span {
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: white;
+    transition: transform 0.2s ease; 
+}
+
+.emoji-menu span:hover {
+    transform: scale(1.2); 
+}
+.emoji-selector.blinking {
+    animation: blinking-animation 1s infinite;
+}
+
+@keyframes blinking-animation {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.glow {
+    animation: glow-animation 3s infinite alternate ease-in-out;
+    box-shadow: inset 0 0 8px rgba(255, 239, 186, 0.6), inset 0 0 12px rgba(255, 223, 150, 0.4);
+}
+
+@keyframes glow-animation {
+    0% { 
+        box-shadow: inset 0 0 5px rgba(255, 239, 186, 0.4), inset 0 0 10px rgba(255, 223, 150, 0.3); 
+    }
+    50% { 
+        box-shadow: inset 0 0 6px rgba(255, 239, 186, 0.5), inset 0 0 11px rgba(255, 223, 150, 0.4);
+    }
+    100% { 
+        box-shadow: inset 0 0 8px rgba(255, 239, 186, 0.6), inset 0 0 12px rgba(255, 223, 150, 0.4); 
+    }
+}
+.emoji-selector.celebration {
+    animation: celebration-bounce 1s infinite ease-in-out;
+}
+
+@keyframes celebration-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.emoji-selector.focus-ring {
+    position: relative;
+    z-index: 1;
+}
+
+.emoji-selector.focus-ring::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px; 
+    height: 30px; 
+    background: radial-gradient(circle, rgba(0, 123, 255, 0.5), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0.8;
+    z-index: -1;
+    animation: focus-ring-pulse 2s infinite linear;
+}
+
+@keyframes focus-ring-pulse {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+        opacity: 0.8;
+    }
+}
+.pulse {
+    position: relative;
+    z-index: 1;
+}
+
+.pulse::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px; 
+    height: 20px;
+    background: radial-gradient(circle at center, rgba(255, 69, 0, 0.7), rgba(255, 140, 0, 0.3), transparent 60%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    animation: pulse-glow 1.5s infinite alternate;
+}
+
+@keyframes pulse-glow {
+    0% { 
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.9;
+        filter: blur(8px);
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.6;
+        filter: blur(12px);
+    }
+    100% { 
+        transform: translate(-50%, -50%) scale(1.4);
+        opacity: 0.8;
+        filter: blur(16px);
+    }
+}
+/* Floating Bounce Effect for 📅 */
+.emoji-selector.wave {
+    animation: floating-bounce 1.8s infinite ease-in-out;
+}
+
+@keyframes floating-bounce {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
 }

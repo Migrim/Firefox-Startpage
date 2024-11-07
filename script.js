@@ -970,15 +970,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const quickNotesModal = document.getElementById('quick-notes-modal');
     const quickNotesContainer = document.getElementById('quick-notes-container');
     const undoButton = document.getElementById('undo-delete');
+    const pinnedMessagesContainer = document.getElementById('pinned-messages-container');
+    const emojiSelectorContainer = document.getElementById('emoji-selector-container');
     let undoTimeout = null;
     let lastDeletedNote = null;
+    const emojis = ["⚠️", "💡", "😢", "😊", "😇", "📌", "🎉", "🔍", "📅", "🔥", "✅"];
+
+    function loadNotesFromCache() {
+        const cachedNotes = JSON.parse(localStorage.getItem('quickNotes')) || [];
+        cachedNotes.forEach(note => addNoteToDOM(note.text, note.pinned, note.emoji));
+    }
+
+    function saveNotesToCache() {
+        const notes = [];
+        quickNotesContainer.querySelectorAll('.quick-note-item').forEach(noteItem => {
+            const label = noteItem.querySelector('label');
+            const isPinned = noteItem.classList.contains('pinned');
+            
+            const emoji = noteItem.getAttribute('data-emoji') || "📌";
+            
+            notes.push({ text: label.textContent, pinned: isPinned, emoji });
+        });
+        
+        localStorage.setItem('quickNotes', JSON.stringify(notes));
+    }
 
     function toggleModalVisibility() {
-        if (quickNotesContainer.children.length > 0 && quickNotesWrapper.classList.contains('expanded')) {
-            quickNotesModal.style.display = 'block';
-        } else {
-            quickNotesModal.style.display = 'none';
-        }
+        quickNotesModal.style.display = quickNotesContainer.children.length > 0 && quickNotesWrapper.classList.contains('expanded') ? 'block' : 'none';
     }
 
     quickNotesButton.addEventListener('click', (event) => {
@@ -1000,13 +1018,8 @@ document.addEventListener('DOMContentLoaded', function() {
             quickNotesWrapper.classList.remove('expanded');
             notesIcon.style.display = 'block';
             newNoteInput.style.display = 'none';
-            toggleModalVisibility(); 
+            toggleModalVisibility();
         }
-    });
-
-    // Prevent modal from closing when clicking on the input
-    newNoteInput.addEventListener('click', (event) => {
-        event.stopPropagation();
     });
 
     document.addEventListener('keydown', function(event) {
@@ -1016,9 +1029,8 @@ document.addEventListener('DOMContentLoaded', function() {
             notesIcon.style.display = 'none';
             newNoteInput.style.display = 'block';
             newNoteInput.focus();
-            toggleModalVisibility(); 
+            toggleModalVisibility();
         }
-        
         if ((event.ctrlKey || event.metaKey) && event.key === 'z') {
             event.preventDefault();
             undoLastDeletion();
@@ -1027,55 +1039,194 @@ document.addEventListener('DOMContentLoaded', function() {
 
     newNoteInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && newNoteInput.value.trim() !== '') {
-            addNote(newNoteInput.value.trim());
+            addNoteToDOM(newNoteInput.value.trim(), false, "📌");
+            saveNotesToCache();
             newNoteInput.value = '';
         }
     });
 
-    function addNote(text) {
+    function deleteNoteWithUndo(noteItem) {
+        if (undoTimeout) clearTimeout(undoTimeout);
+
+        lastDeletedNote = noteItem;
+        noteItem.classList.add('fade-out');
+
+        setTimeout(() => {
+            noteItem.style.display = 'none';
+            quickNotesContainer.removeChild(noteItem);
+            saveNotesToCache();
+            noteItem.classList.remove('fade-out');
+        }, 2000);
+
+        undoButton.style.display = 'block';
+    }
+
+    function addNoteToDOM(text, isPinned = false, emoji) {
         const noteItem = document.createElement('div');
         noteItem.classList.add('quick-note-item');
-        
+        noteItem.setAttribute('data-emoji', emoji);
+    
+        if (isPinned) {
+            noteItem.classList.add('pinned');
+        }
+    
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-
+        
         const label = document.createElement('label');
         label.textContent = text;
-
+        
+        const pinButton = document.createElement('button');
+        pinButton.classList.add('pin-button');
+        pinButton.textContent = '📌';
+        
+        pinButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            togglePinnedNoteDisplay(text, noteItem, emoji);
+            saveNotesToCache();
+        });
+        
         noteItem.appendChild(checkbox);
         noteItem.appendChild(label);
+        noteItem.appendChild(pinButton);
         quickNotesContainer.appendChild(noteItem);
-
-        toggleModalVisibility(); 
-
+    
+        toggleModalVisibility();
+        
+        if (isPinned) {
+            displayPinnedNoteInContainer(text, emoji);
+        }
+    
         checkbox.addEventListener('change', () => {
             if (checkbox.checked) {
                 label.style.textDecoration = 'line-through';
                 label.style.color = '#888';
-
                 undoTimeout = setTimeout(() => deleteNoteWithUndo(noteItem), 3000);
             } else {
                 label.style.textDecoration = 'none';
                 label.style.color = 'white';
                 if (undoTimeout) clearTimeout(undoTimeout);
             }
-            newNoteInput.focus(); 
+            newNoteInput.focus();
         });
     }
 
-    function deleteNoteWithUndo(noteItem) {
-        if (undoTimeout) clearTimeout(undoTimeout);
+    function togglePinnedNoteDisplay(text, originalNoteItem, emoji) {
+        if (originalNoteItem.classList.contains('pinned')) {
+            removePinnedNoteFromContainer(text);
+            originalNoteItem.classList.remove('pinned');
+        } else {
+            displayPinnedNoteInContainer(text, emoji);
+            originalNoteItem.classList.add('pinned');
+        }
+    }
 
-        lastDeletedNote = noteItem;
+    function displayPinnedNoteInContainer(text, emoji) {
+        let pinnedNote = pinnedMessagesContainer.querySelector(`.pinned-note[data-text="${text}"]`);
+    
+        if (!pinnedNote) {
+            pinnedNote = document.createElement('div');
+            pinnedNote.classList.add('pinned-note');
+            pinnedNote.setAttribute('data-text', text);
+            pinnedNote.setAttribute('data-emoji', emoji);
+    
+            const emojiSelector = document.createElement('span');
+            emojiSelector.classList.add('emoji-selector');
+            emojiSelector.textContent = emoji;
+    
+            emojiSelector.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const existingMenu = emojiSelectorContainer.querySelector('.emoji-menu');
+                if (existingMenu) {
+                    emojiSelectorContainer.style.display = 'none'; // Hide if already open
+                    existingMenu.remove();
+                    return;
+                }
+    
+                // Clear any existing content, display the container, and populate it with emoji options
+                emojiSelectorContainer.innerHTML = '';
+                emojiSelectorContainer.style.display = 'block';
+    
+                const emojiMenu = document.createElement('div');
+                emojiMenu.classList.add('emoji-menu');
+                emojis.forEach(emj => {
+                    const emojiOption = document.createElement('span');
+                    emojiOption.textContent = emj;
+                    emojiOption.addEventListener('click', () => {
+                        emojiSelector.textContent = emj;
+                        pinnedNote.setAttribute('data-emoji', emj);
+    
+                        applyEmojiEffect(pinnedNote, emj);
+    
+                        const noteItem = quickNotesContainer.querySelector(`.quick-note-item[data-text="${text}"]`);
+                        if (noteItem) {
+                            noteItem.setAttribute('data-emoji', emj);
+                        }
+    
+                        const cachedNotes = JSON.parse(localStorage.getItem('quickNotes')) || [];
+                        const noteIndex = cachedNotes.findIndex(note => note.text === text);
+                        if (noteIndex !== -1) {
+                            cachedNotes[noteIndex].emoji = emj;
+                            localStorage.setItem('quickNotes', JSON.stringify(cachedNotes));
+                        }
+                        emojiSelectorContainer.style.display = 'none'; // Hide after selection
+                    });
+                    emojiMenu.appendChild(emojiOption);
+                });
+    
+                emojiSelectorContainer.appendChild(emojiMenu);
+            });
+    
+            const noteText = document.createElement('span');
+            noteText.classList.add('scrolling-text');
+            noteText.textContent = ` ${text}`;
+    
+            pinnedNote.appendChild(emojiSelector);
+            pinnedNote.appendChild(noteText);
+            pinnedMessagesContainer.appendChild(pinnedNote);
+    
+            applyEmojiEffect(pinnedNote, emoji);
+        } else {
+            const emojiSelector = pinnedNote.querySelector('.emoji-selector');
+            emojiSelector.textContent = emoji;
+            pinnedNote.setAttribute('data-emoji', emoji);
+    
+            applyEmojiEffect(pinnedNote, emoji);
+        }
+    }
+    
+    // Close the emoji selector if clicking outside
+    document.addEventListener('click', (event) => {
+        if (!pinnedMessagesContainer.contains(event.target) && !emojiSelectorContainer.contains(event.target)) {
+            emojiSelectorContainer.style.display = 'none';
+        }
+    });
+    
+    function applyEmojiEffect(element, emoji) {
+        const emojiSelector = element.querySelector('.emoji-selector');
+        emojiSelector.classList.remove('blinking', 'celebration', 'focus-ring', 'wave');
+        element.classList.remove('glow', 'pulse');
+    
+        if (emoji === '⚠️') {
+            emojiSelector.classList.add('blinking'); // Blink only the emoji for alert
+        } else if (emoji === '💡') {
+            element.classList.add('glow'); // Softer glow effect for lightbulb emoji
+        } else if (emoji === '🎉') {
+            emojiSelector.classList.add('celebration'); // Bouncing animation for celebration emoji
+        } else if (emoji === '🔍') {
+            emojiSelector.classList.add('focus-ring'); // Pulsing focus ring for search emoji
+        } else if (emoji === '🔥') {
+            element.classList.add('pulse'); // Pulsing glow effect for fire emoji
+        } else if (emoji === '📅') {
+            emojiSelector.classList.add('wave'); // Subtle wave effect for calendar emoji
+        }
+    }
 
-        noteItem.classList.add('fade-out');
-
-        setTimeout(() => {
-            noteItem.style.display = 'none';
-            noteItem.classList.remove('fade-out');
-        }, 2000); 
-
-        undoButton.style.display = 'block';
+    function removePinnedNoteFromContainer(text) {
+        const pinnedNote = pinnedMessagesContainer.querySelector(`.pinned-note[data-text="${text}"]`);
+        if (pinnedNote) {
+            pinnedMessagesContainer.removeChild(pinnedNote);
+        }
     }
 
     function undoLastDeletion() {
@@ -1083,20 +1234,19 @@ document.addEventListener('DOMContentLoaded', function() {
             if (undoTimeout) clearTimeout(undoTimeout);
 
             lastDeletedNote.style.display = 'flex';
-            lastDeletedNote.classList.remove('fade-out');
-
+            quickNotesContainer.appendChild(lastDeletedNote);
             const checkbox = lastDeletedNote.querySelector('input[type="checkbox"]');
             const label = lastDeletedNote.querySelector('label');
-
             checkbox.checked = false;
             label.style.textDecoration = 'none';
             label.style.color = 'white';
-
             lastDeletedNote = null; 
-            undoButton.style.display = 'none'; 
+            undoButton.style.display = 'none';
             toggleModalVisibility();
         }
     }
 
     undoButton.addEventListener('click', undoLastDeletion);
+
+    loadNotesFromCache();
 });
