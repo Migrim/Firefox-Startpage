@@ -868,9 +868,9 @@ input:checked + .slider:before {
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    text-align: left; /* Align text to the left */
-    max-width: 500px; /* Default max width for the container */
-    overflow: hidden; /* Hide overflow */
+    text-align: left; 
+    max-width: 500px;
+    overflow: hidden; 
     padding: 10px;
     border-radius: 8px;
 }
@@ -887,25 +887,25 @@ input:checked + .slider:before {
     padding: 10px;
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 10px rgba(20, 20, 20, 0.4);
-    max-width: 100%; /* Allow note to fill container */
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Add ellipsis */
+    max-width: 100%;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
 }
 
 #pinned-messages-container .pinned-note .emoji-selector {
     margin-right: 5px; 
 }
 
-/* Media query for fullscreen width */
 @media (min-width: 1200px) {
     #pinned-messages-container {
-        max-width: 900px; /* Max width when in fullscreen */
+        max-width: 900px;
     }
 }
 .emoji-menu {
     position: absolute;
     background: rgba(20, 20, 20, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.027);
     padding: 5px;
     border-radius: 10px;
     display: flex;
@@ -913,9 +913,16 @@ input:checked + .slider:before {
     margin-top: 5px;
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 10px rgba(20, 20, 20, 0.4);
+}
+#emoji-selector-container {
+    position: absolute;
+    z-index: 1001;
+    top: 100%; 
+    left: 0;
+    display: none; 
+    margin-top: 10px;
     border: 1px solid rgba(255, 255, 255, 0.027);
 }
-
 .emoji-menu span {
     cursor: pointer;
     font-size: 1.2rem;
@@ -1004,7 +1011,7 @@ input:checked + .slider:before {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 300px; 
+    width: 800px; 
     height: 20px;
     background: radial-gradient(circle at center, rgba(255, 69, 0, 0.7), rgba(255, 140, 0, 0.3), transparent 60%);
     border-radius: 50%;

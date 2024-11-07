@@ -71,7 +71,7 @@ document.addEventListener('keydown', function(event) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    const currentVersion = '1.9'; // Current version
+    const currentVersion = '2.1'; 
     const storedVersion = localStorage.getItem('version');
 
     const notification = document.getElementById('version-notification');
@@ -1047,17 +1047,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function deleteNoteWithUndo(noteItem) {
         if (undoTimeout) clearTimeout(undoTimeout);
-
+    
+        const noteText = noteItem.querySelector('label').textContent;
         lastDeletedNote = noteItem;
         noteItem.classList.add('fade-out');
-
+    
+        removePinnedNoteFromContainer(noteText);
+    
         setTimeout(() => {
             noteItem.style.display = 'none';
             quickNotesContainer.removeChild(noteItem);
             saveNotesToCache();
             noteItem.classList.remove('fade-out');
         }, 2000);
-
+    
         undoButton.style.display = 'block';
     }
 
@@ -1138,13 +1141,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 event.stopPropagation();
                 const existingMenu = emojiSelectorContainer.querySelector('.emoji-menu');
                 if (existingMenu) {
-                    emojiSelectorContainer.style.display = 'none'; // Hide if already open
+                    emojiSelectorContainer.style.display = 'none'; 
                     existingMenu.remove();
                     return;
                 }
     
-                // Clear any existing content, display the container, and populate it with emoji options
                 emojiSelectorContainer.innerHTML = '';
+                const rect = emojiSelector.getBoundingClientRect();
+                emojiSelectorContainer.style.top = `${rect.bottom}px`;
+                emojiSelectorContainer.style.left = `${rect.left}px`;
                 emojiSelectorContainer.style.display = 'block';
     
                 const emojiMenu = document.createElement('div');
@@ -1169,7 +1174,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             cachedNotes[noteIndex].emoji = emj;
                             localStorage.setItem('quickNotes', JSON.stringify(cachedNotes));
                         }
-                        emojiSelectorContainer.style.display = 'none'; // Hide after selection
+                        emojiSelectorContainer.style.display = 'none';
                     });
                     emojiMenu.appendChild(emojiOption);
                 });
@@ -1195,7 +1200,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Close the emoji selector if clicking outside
     document.addEventListener('click', (event) => {
         if (!pinnedMessagesContainer.contains(event.target) && !emojiSelectorContainer.contains(event.target)) {
             emojiSelectorContainer.style.display = 'none';
@@ -1208,17 +1212,17 @@ document.addEventListener('DOMContentLoaded', function() {
         element.classList.remove('glow', 'pulse');
     
         if (emoji === '⚠️') {
-            emojiSelector.classList.add('blinking'); // Blink only the emoji for alert
+            emojiSelector.classList.add('blinking'); 
         } else if (emoji === '💡') {
-            element.classList.add('glow'); // Softer glow effect for lightbulb emoji
+            element.classList.add('glow'); 
         } else if (emoji === '🎉') {
-            emojiSelector.classList.add('celebration'); // Bouncing animation for celebration emoji
+            emojiSelector.classList.add('celebration'); 
         } else if (emoji === '🔍') {
-            emojiSelector.classList.add('focus-ring'); // Pulsing focus ring for search emoji
+            emojiSelector.classList.add('focus-ring'); 
         } else if (emoji === '🔥') {
-            element.classList.add('pulse'); // Pulsing glow effect for fire emoji
+            element.classList.add('pulse'); 
         } else if (emoji === '📅') {
-            emojiSelector.classList.add('wave'); // Subtle wave effect for calendar emoji
+            emojiSelector.classList.add('wave');
         }
     }
 
