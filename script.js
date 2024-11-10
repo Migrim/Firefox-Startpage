@@ -6,19 +6,130 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updatePlaceholder() {
         const selectedEngine = localStorage.getItem('searchEngine') || 'google';
-        const placeholderText = selectedEngine === 'google' ? 'Search with Google or enter a URL' : 'Search with DuckDuckGo or enter a URL';
+        let placeholderText;
+    
+        switch (selectedEngine) {
+            case 'google':
+                placeholderText = 'Search with Google or enter a URL';
+                break;
+            case 'duckduckgo':
+                placeholderText = 'Search with DuckDuckGo or enter a URL';
+                break;
+            case 'bing':
+                placeholderText = 'Search with Bing or enter a URL';
+                break;
+            case 'ecosia':
+                placeholderText = 'Search with Ecosia or enter a URL';
+                break;
+            case 'yahoo':
+                placeholderText = 'Search with Yahoo or enter a URL';
+                break;
+            case 'startpage':
+                placeholderText = 'Search with Startpage or enter a URL';
+                break;
+            case 'swisscows':
+                placeholderText = 'Search with Swisscows or enter a URL';
+                break;
+            case 'qwant':
+                placeholderText = 'Search with Qwant or enter a URL';
+                break;
+            case 'yandex':
+                placeholderText = 'Search with Yandex or enter a URL';
+                break;
+            case 'brave':
+                placeholderText = 'Search with Brave or enter a URL';
+                break;
+            case 'baidu':
+                placeholderText = 'Search with Baidu or enter a URL';
+                break;
+            case 'ask':
+                placeholderText = 'Search with Ask or enter a URL';
+                break;
+            case 'wolframalpha':
+                placeholderText = 'Search with Wolfram Alpha or enter a URL';
+                break;
+            case 'mojeek':
+                placeholderText = 'Search with Mojeek or enter a URL';
+                break;
+            case 'metager':
+                placeholderText = 'Search with MetaGer or enter a URL';
+                break;
+            case 'dogpile':
+                placeholderText = 'Search with Dogpile or enter a URL';
+                break;
+            case 'searx':
+                placeholderText = 'Search with Searx or enter a URL';
+                break;
+            case 'you':
+                placeholderText = 'Search with You.com or enter a URL';
+                break;
+            case 'peekier':
+                placeholderText = 'Search with Peekier or enter a URL';
+                break;
+            case 'presearch':
+                placeholderText = 'Search with Presearch or enter a URL';
+                break;
+            case 'info':
+                placeholderText = 'Search with Info.com or enter a URL';
+                break;
+            default:
+                placeholderText = 'Search or enter a URL';
+        }
+    
         searchInput.placeholder = placeholderText;
     }
-
+    
     function getSearchUrl(query) {
         const selectedEngine = localStorage.getItem('searchEngine') || 'google';
-        if (selectedEngine === 'google') {
-            return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-        } else {
-            return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+        
+        switch (selectedEngine) {
+            case 'google':
+                return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            case 'duckduckgo':
+                return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+            case 'bing':
+                return `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+            case 'ecosia':
+                return `https://www.ecosia.org/search?q=${encodeURIComponent(query)}`;
+            case 'yahoo':
+                return `https://search.yahoo.com/search?p=${encodeURIComponent(query)}`;
+            case 'startpage':
+                return `https://www.startpage.com/sp/search?q=${encodeURIComponent(query)}`;
+            case 'swisscows':
+                return `https://swisscows.com/web?query=${encodeURIComponent(query)}`;
+            case 'qwant':
+                return `https://www.qwant.com/?q=${encodeURIComponent(query)}`;
+            case 'yandex':
+                return `https://yandex.com/search/?text=${encodeURIComponent(query)}`;
+            case 'brave':
+                return `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
+            case 'baidu':
+                return `https://www.baidu.com/s?wd=${encodeURIComponent(query)}`;
+            case 'ask':
+                return `https://www.ask.com/web?q=${encodeURIComponent(query)}`;
+            case 'wolframalpha':
+                return `https://www.wolframalpha.com/input/?i=${encodeURIComponent(query)}`;
+            case 'mojeek':
+                return `https://www.mojeek.com/search?q=${encodeURIComponent(query)}`;
+            case 'metager':
+                return `https://metager.org/meta/meta.ger3?eingabe=${encodeURIComponent(query)}`;
+            case 'dogpile':
+                return `https://www.dogpile.com/serp?q=${encodeURIComponent(query)}`;
+            case 'searx':
+                return `https://searx.org/search?q=${encodeURIComponent(query)}`;
+            case 'you':
+                return `https://you.com/search?q=${encodeURIComponent(query)}`;
+            case 'neeva':
+                return `https://peekier.com/#!${encodeURIComponent(query)}`;
+            case 'presearch':
+                return `https://engine.presearch.org/search?q=${encodeURIComponent(query)}`;
+            case 'info':
+                return `https://www.info.com/search?q=${encodeURIComponent(query)}`;
+            default:
+                return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
         }
-    }
-
+    }    
+    
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const query = searchInput.value.trim();
@@ -32,11 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     searchInput.addEventListener('input', function() {
         const query = searchInput.value.trim();
-        if (query.match(/^https?:\/\//)) {
-            urlIcon.style.display = 'inline'; 
-        } else {
-            urlIcon.style.display = 'none'; 
-        }
+        urlIcon.style.display = query.match(/^https?:\/\//) ? 'inline' : 'none';
     });
 
     searchEngineSelect.addEventListener('change', function() {
@@ -53,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     loadSettings();
 });
+
 
 document.addEventListener('keydown', function(event) {
     const searchInput = document.getElementById('search-input');
@@ -486,52 +594,90 @@ document.addEventListener('DOMContentLoaded', function() {
             'linear-gradient(135deg, #5b9bd5, #0072e3)',
             'linear-gradient(135deg, #6fa4e8, #003b88)',
             'linear-gradient(135deg, #003b88, #1f6ed4)',
-            'linear-gradient(135deg, #1c5fb8, #003b88)'
+            'linear-gradient(135deg, #1c5fb8, #003b88)',
+            'linear-gradient(135deg, #4f86c6, #0a65ab)',
+            'linear-gradient(135deg, #2e90e5, #0078d7)'
         ];
         blobs.forEach((blob, index) => {
             blob.style.background = blueShades[index % blueShades.length];
         });
     }
-
+    
     function applyGreenShades() {
         const greenShades = [
             'linear-gradient(135deg, #3cb371, #2e8b57)',
             'linear-gradient(135deg, #32cd32, #006400)',
             'linear-gradient(135deg, #228b22, #006400)',
             'linear-gradient(135deg, #7cfc00, #228b22)',
-            'linear-gradient(135deg, #00ff7f, #3cb371)'
+            'linear-gradient(135deg, #00ff7f, #3cb371)',
+            'linear-gradient(135deg, #66cdaa, #20b2aa)',
+            'linear-gradient(135deg, #2e8b57, #4caf50)'
         ];
         blobs.forEach((blob, index) => {
             blob.style.background = greenShades[index % greenShades.length];
         });
     }
-
+    
     function applyPurpleShades() {
         const purpleShades = [
             'linear-gradient(135deg, #8a2be2, #5d3fd3)',
             'linear-gradient(135deg, #9370db, #7b68ee)',
             'linear-gradient(135deg, #6a0dad, #9400d3)',
             'linear-gradient(135deg, #800080, #4b0082)',
-            'linear-gradient(135deg, #8b008b, #ff00ff)'
+            'linear-gradient(135deg, #8b008b, #ff00ff)',
+            'linear-gradient(135deg, #da70d6, #ba55d3)',
+            'linear-gradient(135deg, #9400d3, #9932cc)'
         ];
         blobs.forEach((blob, index) => {
             blob.style.background = purpleShades[index % purpleShades.length];
         });
     }
-
+    
     function applyOrangeShades() {
         const orangeShades = [
             'linear-gradient(135deg, #ff8c00, #ff4500)',
             'linear-gradient(135deg, #ff7f50, #ff6347)',
             'linear-gradient(135deg, #ff4500, #ff6347)',
             'linear-gradient(135deg, #ffa07a, #ff8c00)',
-            'linear-gradient(135deg, #ff6347, #ff4500)'
+            'linear-gradient(135deg, #ff6347, #ff4500)',
+            'linear-gradient(135deg, #ff4500, #ff7f00)',
+            'linear-gradient(135deg, #ffb347, #ffcc33)'
         ];
         blobs.forEach((blob, index) => {
             blob.style.background = orangeShades[index % orangeShades.length];
         });
     }
-
+    
+    function applyPinkShades() {
+        const pinkShades = [
+            'linear-gradient(135deg, #ff69b4, #ff1493)',
+            'linear-gradient(135deg, #ff85a2, #ff005f)',
+            'linear-gradient(135deg, #ff1493, #c71585)',
+            'linear-gradient(135deg, #ff8aa3, #ff3e96)',
+            'linear-gradient(135deg, #ff5f6d, #ff69b4)',
+            'linear-gradient(135deg, #f08080, #ff69b4)',
+            'linear-gradient(135deg, #d87093, #ff1493)'
+        ];
+        blobs.forEach((blob, index) => {
+            blob.style.background = pinkShades[index % pinkShades.length];
+        });
+    }
+    
+    function applyTealShades() {
+        const tealShades = [
+            'linear-gradient(135deg, #008080, #20b2aa)',
+            'linear-gradient(135deg, #48d1cc, #00ced1)',
+            'linear-gradient(135deg, #5f9ea0, #4682b4)',
+            'linear-gradient(135deg, #66cdaa, #2e8b57)',
+            'linear-gradient(135deg, #2f4f4f, #008b8b)',
+            'linear-gradient(135deg, #00ced1, #40e0d0)',
+            'linear-gradient(135deg, #008b8b, #5f9ea0)'
+        ];
+        blobs.forEach((blob, index) => {
+            blob.style.background = tealShades[index % tealShades.length];
+        });
+    }
+    
     function resetCircleColors() {
         const defaultColors = [
             'linear-gradient(135deg, #31f30a, #0219e9)',
@@ -544,7 +690,7 @@ document.addEventListener('DOMContentLoaded', function() {
             blob.style.background = defaultColors[index % defaultColors.length];
         });
     }
-
+    
     function applyColorOption(option) {
         if (option === 'blue') {
             applyBlueShades();
@@ -554,6 +700,10 @@ document.addEventListener('DOMContentLoaded', function() {
             applyPurpleShades();
         } else if (option === 'orange') {
             applyOrangeShades();
+        } else if (option === 'pink') {
+            applyPinkShades();
+        } else if (option === 'teal') {
+            applyTealShades();
         } else if (option === 'custom') {
             customColorInput.classList.add('show');
             const savedCustomColor = localStorage.getItem('dotColor');
@@ -563,21 +713,21 @@ document.addEventListener('DOMContentLoaded', function() {
             resetCircleColors();
         }
     }
-
+    
     dotColorOption.addEventListener('change', function() {
         const selectedOption = dotColorOption.value;
         localStorage.setItem('dotColorOption', selectedOption);
-        
-        if (selectedOption === 'blue' || selectedOption === 'green' || selectedOption === 'purple' || selectedOption === 'orange') {
-            applyColorOption(selectedOption);
-            location.reload(); // Reload page for specific colors
-        } else if (selectedOption === 'custom') {
-            applyColorOption(selectedOption);
-            localStorage.removeItem('dotColor');
+    
+        if (['blue', 'green', 'purple', 'orange', 'pink', 'teal'].includes(selectedOption)) {
+            location.reload();
         } else {
             applyColorOption(selectedOption);
         }
-    });
+    
+        if (selectedOption !== 'custom') {
+            customColorInput.classList.remove('show');
+        }
+    });    
 
     customColorInput.addEventListener('input', function() {
         const colorValue = this.value.startsWith('#') ? this.value : `#${this.value}`;
@@ -1367,4 +1517,10 @@ document.addEventListener('DOMContentLoaded', function() {
     undoButton.addEventListener('click', undoLastDeletion);
 
     loadNotesFromCache();
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const quickNotesButton = document.querySelector('.quick-notes-button');
+    setTimeout(() => {
+        quickNotesButton.style.opacity = 1; 
+    }, 100); 
 });
