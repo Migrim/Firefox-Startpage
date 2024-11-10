@@ -469,13 +469,136 @@ document.querySelector('.close-modal').addEventListener('click', function() {
     document.querySelector('.settings-modal').classList.remove('show');
 });
 
-document.getElementById('dot-color-option').addEventListener('change', function() {
+document.addEventListener('DOMContentLoaded', function() {
+    const dotColorOption = document.getElementById('dot-color-option');
     const customColorInput = document.getElementById('dot-color');
-    if (this.value === 'custom') {
-        customColorInput.classList.add('show');
-    } else {
-        customColorInput.classList.remove('show');
+    const blobs = document.querySelectorAll('.shape-blob');
+
+    function setCircleColors(color) {
+        blobs.forEach(blob => {
+            blob.style.background = color;
+        });
     }
+
+    function applyBlueShades() {
+        const blueShades = [
+            'linear-gradient(135deg, #4a90e2, #0066cc)',
+            'linear-gradient(135deg, #5b9bd5, #0072e3)',
+            'linear-gradient(135deg, #6fa4e8, #003b88)',
+            'linear-gradient(135deg, #003b88, #1f6ed4)',
+            'linear-gradient(135deg, #1c5fb8, #003b88)'
+        ];
+        blobs.forEach((blob, index) => {
+            blob.style.background = blueShades[index % blueShades.length];
+        });
+    }
+
+    function applyGreenShades() {
+        const greenShades = [
+            'linear-gradient(135deg, #3cb371, #2e8b57)',
+            'linear-gradient(135deg, #32cd32, #006400)',
+            'linear-gradient(135deg, #228b22, #006400)',
+            'linear-gradient(135deg, #7cfc00, #228b22)',
+            'linear-gradient(135deg, #00ff7f, #3cb371)'
+        ];
+        blobs.forEach((blob, index) => {
+            blob.style.background = greenShades[index % greenShades.length];
+        });
+    }
+
+    function applyPurpleShades() {
+        const purpleShades = [
+            'linear-gradient(135deg, #8a2be2, #5d3fd3)',
+            'linear-gradient(135deg, #9370db, #7b68ee)',
+            'linear-gradient(135deg, #6a0dad, #9400d3)',
+            'linear-gradient(135deg, #800080, #4b0082)',
+            'linear-gradient(135deg, #8b008b, #ff00ff)'
+        ];
+        blobs.forEach((blob, index) => {
+            blob.style.background = purpleShades[index % purpleShades.length];
+        });
+    }
+
+    function applyOrangeShades() {
+        const orangeShades = [
+            'linear-gradient(135deg, #ff8c00, #ff4500)',
+            'linear-gradient(135deg, #ff7f50, #ff6347)',
+            'linear-gradient(135deg, #ff4500, #ff6347)',
+            'linear-gradient(135deg, #ffa07a, #ff8c00)',
+            'linear-gradient(135deg, #ff6347, #ff4500)'
+        ];
+        blobs.forEach((blob, index) => {
+            blob.style.background = orangeShades[index % orangeShades.length];
+        });
+    }
+
+    function resetCircleColors() {
+        const defaultColors = [
+            'linear-gradient(135deg, #31f30a, #0219e9)',
+            'linear-gradient(135deg, #005bb5, #0083cc)',
+            'linear-gradient(135deg, #6e21a2, #923fba)',
+            'linear-gradient(135deg, #cc4230, #cc3700)',
+            'linear-gradient(135deg, #fe4500, #fe4500)'
+        ];
+        blobs.forEach((blob, index) => {
+            blob.style.background = defaultColors[index % defaultColors.length];
+        });
+    }
+
+    function applyColorOption(option) {
+        if (option === 'blue') {
+            applyBlueShades();
+        } else if (option === 'green') {
+            applyGreenShades();
+        } else if (option === 'purple') {
+            applyPurpleShades();
+        } else if (option === 'orange') {
+            applyOrangeShades();
+        } else if (option === 'custom') {
+            customColorInput.classList.add('show');
+            const savedCustomColor = localStorage.getItem('dotColor');
+            if (savedCustomColor) setCircleColors(savedCustomColor);
+        } else {
+            customColorInput.classList.remove('show');
+            resetCircleColors();
+        }
+    }
+
+    dotColorOption.addEventListener('change', function() {
+        const selectedOption = dotColorOption.value;
+        localStorage.setItem('dotColorOption', selectedOption);
+        
+        if (selectedOption === 'blue' || selectedOption === 'green' || selectedOption === 'purple' || selectedOption === 'orange') {
+            applyColorOption(selectedOption);
+            location.reload(); // Reload page for specific colors
+        } else if (selectedOption === 'custom') {
+            applyColorOption(selectedOption);
+            localStorage.removeItem('dotColor');
+        } else {
+            applyColorOption(selectedOption);
+        }
+    });
+
+    customColorInput.addEventListener('input', function() {
+        const colorValue = this.value.startsWith('#') ? this.value : `#${this.value}`;
+        setCircleColors(colorValue);
+        localStorage.setItem('dotColor', colorValue);
+    });
+
+    function loadDotColor() {
+        const savedOption = localStorage.getItem('dotColorOption') || 'default';
+        dotColorOption.value = savedOption;
+        applyColorOption(savedOption);
+        if (savedOption === 'custom') {
+            const savedCustomColor = localStorage.getItem('dotColor');
+            if (savedCustomColor) {
+                customColorInput.value = savedCustomColor.replace(/^#/, '');
+                setCircleColors(savedCustomColor);
+            }
+        }
+    }
+
+    loadDotColor();
 });
 
 document.getElementById('color-scheme').addEventListener('change', function() {
@@ -524,15 +647,6 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('dotColorOption', this.value);
     });
     
-    document.getElementById('dot-color').addEventListener('input', function() {
-        const color = this.value;
-        if (/^[0-9A-Fa-f]{6}$/.test(color)) {
-            const fullColor = `#${color}`;
-            setCircleColors(fullColor);
-            localStorage.setItem('dotColor', fullColor);
-        }
-    });
-    
     document.getElementById('city').addEventListener('input', function() {
         const city = this.value;
         localStorage.setItem('city', city);
@@ -551,7 +665,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.background = 'black';
                 break;
             case 'light':
-                document.body.style.background = '#fcfcfc';
+                document.body.style.background = '#1F2024';
                 break;
             case 'midnight':
                 document.body.style.background = '#270761';
@@ -586,8 +700,8 @@ document.addEventListener('DOMContentLoaded', function() {
             'linear-gradient(135deg, #cc4230, #cc3700)',
             'linear-gradient(135deg, #fe4500, #fe4500)'
         ];
-        document.querySelectorAll('.background-circle').forEach((circle, index) => {
-            circle.style.background = defaultColors[index];
+        document.querySelectorAll('.shape-blob').forEach((blob, index) => {
+            blob.style.background = defaultColors[index % defaultColors.length];
         });
     }
 

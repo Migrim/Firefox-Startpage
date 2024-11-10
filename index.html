@@ -10,11 +10,17 @@
     <link rel="icon" href="static/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <div class="background-circle circle1"></div>
-    <div class="background-circle circle2"></div>
-    <div class="background-circle circle3"></div>
-    <div class="background-circle circle4"></div>
-    <div class="background-circle circle5"></div>
+    <div class="blob-c">
+        <div class="shape-blob one"></div>
+        <div class="shape-blob two"></div>
+        <div class="shape-blob three"></div>
+        <div class="shape-blob four"></div>
+        <div class="shape-blob five"></div>
+        <div class="shape-blob six"></div>
+        <div class="shape-blob seven"></div>
+        <div class="shape-blob eight"></div>
+        <div class="shape-blob nine"></div>
+    </div>
 
     <div class="date-widget" id="date-widget"></div>
     <div class="clock-widget" id="clock-widget">
@@ -92,8 +98,8 @@
                 <label for="color-scheme">Color Scheme:</label>
                 <select id="color-scheme">
                     <option value="midnight">Midnight</option>
-                    <option value="dark">Dark Mode</option>
-                    <option value="light">Light Mode</option>
+                    <option value="dark">Very Dark Mode</option>
+                    <option value="light">Dark Mode</option>
                     <option value="sunset">Sunset</option>
                     <option value="forest">Forest</option>
                     <option value="mystic">Mystic</option> 
@@ -104,8 +110,12 @@
                 <select id="dot-color-option">
                     <option value="default">Default</option>
                     <option value="custom">Custom</option>
+                    <option value="blue">Blue</option> 
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                    <option value="orange">Orange</option>
                 </select>
-                <input type="text" id="dot-color" class="custom-color-input" placeholder="FFFFFF     (no '#' required)" pattern="^#[0-9A-Fa-f]{6}$" title="Enter a hex color code">
+                <input type="text" id="dot-color" class="custom-color-input" placeholder="FFFFFF (no '#' required)" pattern="^[0-9A-Fa-f]{6}$" title="Enter a hex color code">
             </div>
             <div class="option">
                 <label for="city">Weather Widget City:</label>

@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,900');
+
 body {
-    background-color: #270761;
+    background-color: #1F2024;
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -13,78 +15,6 @@ body {
     user-select: none; 
 }
 
-.background-circle {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(50px);
-    z-index: 1;
-    animation: randomMovement 50s infinite alternate ease-in-out;
-}
-
-.circle1, .circle2, .circle3, .circle4, .circle5 {
-    position: absolute;
-    border-radius: 50%;
-}
-
-.circle1 {
-    width: 100px;
-    height: 100px;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: linear-gradient(135deg, #31f30a, #0219e9);
-    animation: randomMovement 50s infinite alternate ease-in-out;
-    animation-delay: 0s;
-    animation-fill-mode: both;
-}
-
-.circle2 {
-    width: 80px;
-    height: 80px;
-    top: 45%;
-    left: calc(50% + 150px);
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #005bb5, #0083cc);
-    animation: randomMovement 50s infinite alternate ease-in-out;
-    animation-delay: 1s;
-    animation-fill-mode: both;
-}
-
-.circle3 {
-    width: 70px;
-    height: 70px;
-    top: 60%;
-    left: calc(50% - 50px);
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #6e21a2, #923fba);
-    animation: randomMovement 50s infinite alternate ease-in-out;
-    animation-delay: 2s;
-    animation-fill-mode: both;
-}
-
-.circle4 {
-    width: 120px;
-    height: 120px;
-    top: 55%;
-    left: calc(50% - 200px);
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #cc4230, #cc3700);
-    animation: randomMovement 50s infinite alternate ease-in-out;
-    animation-delay: 3s;
-    animation-fill-mode: both;
-}
-
-.circle5 {
-    width: 90px;
-    height: 90px;
-    top: 70%;
-    left: calc(50% + 200px);
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #5b0000, #7a00b0);
-    animation: randomMovement 50s infinite alternate ease-in-out;
-    animation-delay: 2s;
-    animation-fill-mode: both;
-}
 .search-bar {
     display: flex;
     align-items: center;
@@ -114,30 +44,6 @@ input[type="text"] {
     font-size: 16px;
     user-select: text;
 }
-
-@keyframes randomMovement {
-    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-    5% { transform: translate(-10px, 15px) rotate(-5deg) scale(1.03); }
-    10% { transform: translate(20px, -15px) rotate(10deg) scale(0.97); }
-    15% { transform: translate(-25px, 10px) rotate(-10deg) scale(1.05); }
-    20% { transform: translate(10px, -20px) rotate(5deg) scale(0.95); }
-    25% { transform: translate(-5px, 25px) rotate(-15deg) scale(1.07); }
-    30% { transform: translate(15px, -30px) rotate(20deg) scale(0.93); }
-    35% { transform: translate(-20px, 35px) rotate(-10deg) scale(1.04); }
-    40% { transform: translate(25px, -10px) rotate(10deg) scale(0.96); }
-    45% { transform: translate(-30px, 15px) rotate(-5deg) scale(1.06); }
-    50% { transform: translate(50px, -5px) rotate(15deg) scale(0.94); }
-    55% { transform: translate(-15px, 20px) rotate(-20deg) scale(1.05); }
-    60% { transform: translate(10px, -25px) rotate(10deg) scale(1.01); }
-    65% { transform: translate(-20px, 30px) rotate(-10deg) scale(0.98); }
-    70% { transform: translate(15px, -35px) rotate(5deg) scale(1.03); }
-    75% { transform: translate(-25px, 20px) rotate(-15deg) scale(0.95); }
-    80% { transform: translate(30px, -10px) rotate(10deg) scale(1.02); }
-    85% { transform: translate(-20px, 5px) rotate(-5deg) scale(1.04); }
-    90% { transform: translate(15px, -25px) rotate(15deg) scale(0.97); }
-    95% { transform: translate(-10px, 30px) rotate(-10deg) scale(1.03); }
-}
-
 .shortcuts {
     display: flex;
     flex-direction: column;
@@ -846,6 +752,7 @@ input:checked + .slider:before {
     white-space: normal; 
     word-wrap: break-word; 
     font-size: 0.9em; 
+    font-family: 'Playfair Display', sans-serif, monospace;
 }
 .quick-note-item:hover label {
     color: #ccc; 
@@ -1046,4 +953,156 @@ input:checked + .slider:before {
     0% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
     100% { transform: translateY(0); }
+}
+.blob-c {
+    min-height: 100vh;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: blur(40px);
+}
+
+.shape-blob {
+    background: #26C3F9;
+    border-radius: 40% 50% 30% 40%;
+    animation: transform 18s ease-in-out infinite both alternate,
+               movement_one 12s ease-in-out infinite both,
+               random_movement 20s ease-in-out infinite,
+               fade_in 0.5s ease-in forwards;
+    opacity: 0;
+    position: absolute;
+}
+
+.shape-blob.one {
+    background: #0066CC;
+    height: 180px;
+    width: 240px;
+    transform: translate(-180px, -180px) rotate(-180deg);
+    animation: transform 8s ease-in-out infinite alternate, 
+               movement_one 20s ease-in-out infinite alternate, 
+               random_move 18s ease-in-out infinite alternate, 
+               fade_in 0.5s ease-in forwards 0.1s;
+}
+
+.shape-blob.two {
+    background: #3399FF;
+    height: 160px;
+    width: 210px;
+    transform: translate(230px, -230px) rotate(-180deg);
+    animation: transform 10s ease-in-out infinite alternate, 
+               movement_two 18s ease-in-out infinite alternate, 
+               random_move 22s ease-in-out infinite alternate, 
+               fade_in 0.5s ease-in forwards 0.15s;
+}
+
+.shape-blob.three {
+    background: #33CCFF;
+    height: 140px;
+    width: 190px;
+    transform: translate(-250px, 250px) rotate(-180deg);
+    animation: transform 7s ease-in-out infinite alternate, 
+               movement_three 23s ease-in-out infinite alternate, 
+               random_move 19s ease-in-out infinite alternate, 
+               fade_in 0.5s ease-in forwards 0.2s;
+}
+
+.shape-blob.four {
+    background: #00BFFF;
+    height: 120px;
+    width: 160px;
+    transform: translate(280px, 280px) rotate(-180deg);
+    animation: transform 17s ease-in-out infinite alternate, 
+               movement_four 13s ease-in-out infinite alternate, 
+               random_move 20s ease-in-out infinite alternate, 
+               fade_in 0.5s ease-in forwards 0.25s;
+}
+
+.shape-blob.five {
+    background: #0099FF;
+    height: 100px;
+    width: 140px;
+    transform: translate(-330px, 130px) rotate(-180deg);
+    animation: transform 12s ease-in-out infinite alternate, 
+               movement_one 18s ease-in-out infinite alternate, 
+               random_move 16s ease-in-out infinite alternate, 
+               fade_in 0.5s ease-in forwards 0.3s;
+}
+
+.shape-blob.six {
+    background: #66CCFF;
+    height: 90px;
+    width: 120px;
+    transform: translate(330px, -130px) rotate(-180deg);
+    animation: transform 5s ease-in-out infinite alternate, 
+               movement_two 14s ease-in-out infinite alternate, 
+               random_move 21s ease-in-out infinite alternate, 
+               fade_in 0.5s ease-in forwards 0.35s;
+}
+
+.shape-blob.seven {
+    background: #99CCFF;
+    height: 80px;
+    width: 110px;
+    transform: translate(-380px, 230px) rotate(180deg);
+    animation: transform 11s ease-in-out infinite alternate, 
+               movement_three 16s ease-in-out infinite alternate, 
+               random_move 24s ease-in-out infinite alternate, 
+               fade_in 0.5s ease-in forwards 0.4s;
+}
+
+.shape-blob.eight {
+    background: #1E90FF;
+    height: 70px;
+    width: 100px;
+    transform: translate(380px, 230px) rotate(-180deg);
+    animation: transform 14s ease-in-out infinite alternate, 
+               movement_four 9s ease-in-out infinite alternate, 
+               random_move 17s ease-in-out infinite alternate, 
+               fade_in 0.5s ease-in forwards 0.45s;
+}
+
+.shape-blob.nine {
+    background: #4682B4;
+    height: 60px;
+    width: 80px;
+    transform: translate(-430px, -330px) rotate(-180deg);
+    animation: transform 9s ease-in-out infinite alternate, 
+               movement_one 22s ease-in-out infinite alternate, 
+               random_move 25s ease-in-out infinite alternate, 
+               fade_in 0.5s ease-in forwards 0.5s;
+}
+
+@keyframes transform {
+    0%, 100% { border-radius: 33% 67% 70% 30% / 30% 40% 70% 70%; }
+    20% { border-radius: 37% 63% 51% 49% / 37% 35% 35% 63%; }
+    40% { border-radius: 36% 64% 64% 36% / 64% 48% 52% 26%; }
+    60% { border-radius: 37% 63% 51% 49% / 30% 30% 70% 73%; }
+    80% { border-radius: 40% 60% 42% 58% / 51% 51% 49% 59%; }
+}
+
+@keyframes movement_one {
+    0%, 100% { transform: none; }
+    50% { transform: translate(50%, 20%) rotateY(10deg) scale(1); }
+}
+
+@keyframes movement_two {
+    0%, 500% { transform: none; }
+    50% { transform: translate(50%, 20%) rotate(-200deg) scale(1.3); }
+}
+
+@keyframes random_movement {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    20% { transform: translate(-5px, 10px) rotate(10deg); }
+    40% { transform: translate(10px, -5px) rotate(-10deg); }
+    60% { transform: translate(-10px, 15px) rotate(5deg); }
+    80% { transform: translate(5px, -10px) rotate(-5deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes fade_in {
+    0% { opacity: 0; }
+    100% { opacity: 0.7; }
 }
