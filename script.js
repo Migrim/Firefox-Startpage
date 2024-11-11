@@ -179,7 +179,7 @@ document.addEventListener('keydown', function(event) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    const currentVersion = '2.1'; 
+    const currentVersion = '2.2'; 
     const storedVersion = localStorage.getItem('version');
 
     const notification = document.getElementById('version-notification');
@@ -857,8 +857,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.background = 'linear-gradient(to right, #ff7e5f, #feb47b)';
                 break;
             case 'forest':
-                document.body.style.background = 'linear-gradient(to bottom, #2c5d3f, #97bc62)';
-
+                document.body.style.background = '#4f7445'; 
                 break;
             case 'mystic':
                 document.body.style.background = 'linear-gradient(to right, #2e3d82, #633974, #e94560)';
@@ -1320,7 +1319,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('keydown', function(event) {
-        if ((event.ctrlKey || event.metaKey) && event.key === 'n') {
+        if ((event.altKey && event.shiftKey && event.key === 'n') || 
+            ((event.ctrlKey || event.metaKey) && event.key === 'n')) {
             event.preventDefault();
             quickNotesWrapper.classList.add('expanded');
             notesIcon.style.display = 'none';
@@ -1333,7 +1333,7 @@ document.addEventListener('DOMContentLoaded', function() {
             undoLastDeletion();
         }
     });
-
+    
     newNoteInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && newNoteInput.value.trim() !== '') {
             addNoteToDOM(newNoteInput.value.trim(), false, "📌");
