@@ -17,7 +17,7 @@ A sleek and modern startpage designed with a dark glassmorphism style. This star
 - **3D Tilt Effect**: A stylish 3D tilt effect on the weather card.
 - **Shortcut Rows Configuration**: Customize the number of shortcut rows (1-3) displayed on the startpage through the settings.
 - **Changeable City**: Update the city displayed in the weather widget via the settings.
-- **Quick Notes Feature**: Easily accessible notes feature to jot down quick thoughts, accessible via `Alt + Shift + N` on Windows and `Cmd + N` on macOS.
+- **Quick Notes Feature**: Easily accessible notes feature to jot down quick thoughts, accessible via `Alt + Shift + N` on Windows and `⌘ + Shift + N` on macOS.
 - **Date Widget**: Displays interesting facts and historical events for the current day, making your browsing experience informative and engaging.
 
 ![3D Tilt Effect](image2.jpeg)
