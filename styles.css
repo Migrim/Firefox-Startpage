@@ -1135,3 +1135,211 @@ input:checked + .slider:before {
     0% { opacity: 0; }
     100% { opacity: 0.7; }
 }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.027);
+    border-radius: 15px;
+    backdrop-filter: blur(15px);
+    margin: 10% auto;
+    padding: 30px;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 12px;
+    color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center elements horizontally */
+    gap: 20px;
+}
+
+.close {
+    color: #bbb;
+    font-size: 24px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.modal-content label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #e0e0e0;
+    align-self: flex-start; /* Align labels to the left */
+}
+
+.modal-content input[type="url"] {
+    width: 100%;
+    max-width: 95%; /* Restrict max width */
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    outline: none;
+    text-align: center; /* Center text inside input */
+}
+
+.modal-content input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.modal-content button {
+    padding: 10px 20px; /* Adjust padding to fit text */
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    align-self: center; /* Center button */
+    width: auto; /* Fit width to text */
+}
+
+.modal-content button:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+.custom-search-engine {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.custom-search-engine {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.search-engine-favicon {
+    width: 16px;
+    height: 16px;
+}
+
+.show-checkbox {
+    font-size: 20px; /* Adjust icon size */
+    color: #444; /* Default color */
+    background: rgba(51, 51, 51, 0.8); /* Slightly transparent background */
+    border: 1px solid rgba(68, 68, 68, 0.8); /* Slightly transparent border */
+    border-radius: 4px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.show-checkbox.active {
+    color: #fff;
+}
+
+.delete-icon {
+    font-size: 20px;
+    color: #fff;
+    background: rgba(51, 51, 51, 0.8); /* Slightly transparent background */
+    border: 1px solid rgba(68, 68, 68, 0.8); /* Slightly transparent border */
+    border-radius: 4px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.icon-group {
+    display: flex;
+    align-items: center;
+    gap: 1px; /* Adjust as needed to bring them closer */
+}
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; /* Optional spacing above the button */
+}
+
+.add-search-engine-button {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+.add-search-engine-button:hover {
+    background: #555;
+}
+.secondary-search-bars-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column-reverse; /* Stack bars from the bottom up */
+    gap: 5px; /* Space between each bar */
+}
+
+.secondary-search-bar {
+    display: flex;
+    align-items: center;
+    background: rgba(20, 20, 20, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.027);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 5px 10px;
+    color: #ffffff;
+    width: 150px;
+    transform: translateX(100%); /* Start offscreen to the right */
+    opacity: 0;
+    animation: slideIn 1s ease forwards; /* Apply animation */
+}
+
+.secondary-search-bar img.secondary-search-favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+.secondary-search-bar input[type="text"] {
+    border: none;
+    outline: none;
+    font-size: 12px;
+    padding: 3px;
+    flex: 1;
+    color: #ffffff;
+    background: transparent;
+}
+
+/* Animation for the fly-in effect */
+@keyframes slideIn {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

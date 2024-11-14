@@ -1557,3 +1557,202 @@ document.addEventListener('DOMContentLoaded', function() {
         quickNotesButton.style.opacity = 1; 
     }, 100); 
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const customSearchEnginesContainer = document.getElementById('custom-search-engines-container');
+    const addSearchEngineButton = document.getElementById('add-search-engine');
+    const modal = document.querySelector('.modal');
+    const saveButton = document.getElementById('save-search-engine');
+    const searchEngineInput = document.getElementById('search-engine-url');
+    const displayCheckbox = document.getElementById('display-checkbox');
+    const closeButton = document.querySelector('.close');
+    const secondarySearchBarsContainer = document.createElement('div');
+    const maxEngines = 5; // Maximum number of search engines allowed
+    
+    // Container for all secondary search bars
+    secondarySearchBarsContainer.classList.add('secondary-search-bars-container');
+    document.body.appendChild(secondarySearchBarsContainer);
+
+    // Load search engines on startup
+    loadCustomSearchEngines();
+    updateAddButtonVisibility(); // Check initial visibility for the add button
+
+    // Show modal when add button is clicked
+    addSearchEngineButton.addEventListener('click', () => {
+        searchEngineInput.value = ''; // Clear input field
+        displayCheckbox.checked = false; // Reset checkbox
+        modal.style.display = 'block'; // Show modal
+    });
+
+    // Close modal when the close button or outside area is clicked
+    closeButton.addEventListener('click', closeModal);
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+    });
+
+    // Save button to add the new search engine
+    saveButton.addEventListener('click', () => {
+        const url = searchEngineInput.value.trim();
+        const display = displayCheckbox.checked;
+
+        if (url) {
+            const displayName = extractDisplayName(url);
+
+            // Check if the maximum number of search engines has been reached
+            if (customSearchEnginesContainer.childElementCount >= maxEngines) {
+                alert("Maximum of 5 search engines reached.");
+                closeModal();
+                return;
+            }
+
+            addSearchEngineInput(displayName, display, url); // Pass URL for actual search
+            saveCustomSearchEngines(); // Save to localStorage
+            closeModal(); // Close the modal
+            updateAddButtonVisibility(); // Update button visibility
+
+            if (display) {
+                createSecondarySearchBar(url, displayName);
+            }
+        }
+    });
+
+    // Function to extract a display name (hostname only) from the full URL
+    function extractDisplayName(url) {
+        try {
+            const urlObj = new URL(url);
+            return urlObj.hostname.replace('www.', ''); // Extracts 'youtube.com' from 'https://www.youtube.com/...'
+        } catch (error) {
+            return url; // Fallback if URL is not valid
+        }
+    }
+
+    function addSearchEngineInput(displayName, display, fullUrl) {
+        const engineDiv = document.createElement('div');
+        engineDiv.classList.add('custom-search-engine');
+    
+        engineDiv.innerHTML = `
+            <img src="https://www.google.com/s2/favicons?domain=${displayName}" alt="${displayName}" class="search-engine-favicon">
+            <span>${displayName}</span>
+            <div class="icon-group">
+                <span class="show-checkbox material-icons">${display ? 'check_box' : 'check_box_outline_blank'}</span>
+                <span class="delete-icon material-icons">delete</span>
+            </div>
+        `;
+    
+        // Toggle functionality for the checkbox icon
+        const checkboxIcon = engineDiv.querySelector('.show-checkbox');
+        if (display) {
+            checkboxIcon.classList.add('active'); // Set initial state
+            createSecondarySearchBar(fullUrl, displayName); // Show secondary search bar if active
+        }
+    
+        checkboxIcon.addEventListener('click', () => {
+            const active = checkboxIcon.classList.toggle('active');
+            checkboxIcon.textContent = active ? 'check_box' : 'check_box_outline_blank';
+            saveCustomSearchEngines();
+
+            if (active) {
+                createSecondarySearchBar(fullUrl, displayName);
+            } else {
+                removeSecondarySearchBar(displayName);
+            }
+        });
+    
+        // Attach delete functionality to the delete icon
+        engineDiv.querySelector('.delete-icon').addEventListener('click', () => {
+            engineDiv.remove(); // Remove the search engine from the UI
+            saveCustomSearchEngines(); // Save changes to localStorage
+            removeSecondarySearchBar(displayName); // Also remove the associated secondary search bar
+            updateAddButtonVisibility(); // Update button visibility after deletion
+        });
+    
+        // Store full URL as a data attribute
+        engineDiv.dataset.fullUrl = fullUrl;
+        customSearchEnginesContainer.appendChild(engineDiv);
+    }
+
+    // Function to create a secondary search bar with animation delay
+    function createSecondarySearchBar(url, displayName) {
+        // Check if a search bar for this engine already exists
+        if (document.querySelector(`.secondary-search-bar[data-engine="${displayName}"]`)) return;
+        
+        const secondarySearchBar = document.createElement('div');
+        secondarySearchBar.classList.add('secondary-search-bar');
+        secondarySearchBar.dataset.engine = displayName;
+
+        // Set animation delay based on the current number of secondary search bars
+        const index = secondarySearchBarsContainer.childElementCount;
+        secondarySearchBar.style.animationDelay = `${index * 0.1}s`; // Add delay based on position
+
+        const favicon = document.createElement('img');
+        favicon.classList.add('secondary-search-favicon');
+        favicon.src = `https://www.google.com/s2/favicons?domain=${displayName}`;
+        secondarySearchBar.appendChild(favicon);
+
+        const secondarySearchInput = document.createElement('input');
+        secondarySearchInput.type = 'text';
+        secondarySearchInput.placeholder = displayName; // Set placeholder to display name
+        secondarySearchBar.appendChild(secondarySearchInput);
+
+        // Set up search functionality for the input field
+        secondarySearchInput.onkeydown = function(event) {
+            if (event.key === 'Enter') {
+                const queryUrl = `${url}${encodeURIComponent(secondarySearchInput.value)}`;
+                if (event.ctrlKey || event.metaKey) {
+                    // Open in new tab if Ctrl (Windows) or Command (Mac) is pressed
+                    window.open(queryUrl, '_blank');
+                } else {
+                    // Otherwise, open in the same tab
+                    window.location.href = queryUrl;
+                }
+                secondarySearchInput.value = '';
+            }
+        };
+
+        // Append the new search bar to the container
+        secondarySearchBarsContainer.appendChild(secondarySearchBar);
+    }
+
+    // Function to remove a specific secondary search bar
+    function removeSecondarySearchBar(displayName) {
+        const secondarySearchBar = document.querySelector(`.secondary-search-bar[data-engine="${displayName}"]`);
+        if (secondarySearchBar) {
+            secondarySearchBarsContainer.removeChild(secondarySearchBar);
+        }
+    }
+
+    // Function to save search engines to localStorage
+    function saveCustomSearchEngines() {
+        const engines = [];
+        customSearchEnginesContainer.querySelectorAll('.custom-search-engine').forEach(engineDiv => {
+            const displayName = engineDiv.querySelector('span').textContent;
+            const display = engineDiv.querySelector('.show-checkbox').classList.contains('active');
+            const fullUrl = engineDiv.dataset.fullUrl;
+            if (displayName && fullUrl) engines.push({ displayName, fullUrl, display });
+        });
+        localStorage.setItem('customSearchEngines', JSON.stringify(engines));
+    }
+
+    // Load saved search engines from localStorage
+    function loadCustomSearchEngines() {
+        const customEngines = JSON.parse(localStorage.getItem('customSearchEngines')) || [];
+        customSearchEnginesContainer.innerHTML = '';
+        customEngines.forEach(engine => {
+            addSearchEngineInput(engine.displayName, engine.display, engine.fullUrl);
+        });
+    }
+
+    // Function to update the visibility of the "Add Search Engine" button based on the number of search engines
+    function updateAddButtonVisibility() {
+        if (customSearchEnginesContainer.childElementCount >= maxEngines) {
+            addSearchEngineButton.style.display = 'none'; // Hide the button if the limit is reached
+        } else {
+            addSearchEngineButton.style.display = 'block'; // Show the button if under the limit
+        }
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+        searchEngineInput.value = ''; 
+        displayCheckbox.checked = false; 
+    }
+});
