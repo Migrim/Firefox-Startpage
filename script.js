@@ -179,7 +179,7 @@ document.addEventListener('keydown', function(event) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    const currentVersion = '2.2'; 
+    const currentVersion = '2.4'; 
     const storedVersion = localStorage.getItem('version');
 
     const notification = document.getElementById('version-notification');
@@ -1621,27 +1621,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function addSearchEngineInput(displayName, display, fullUrl) {
         const engineDiv = document.createElement('div');
         engineDiv.classList.add('custom-search-engine');
-    
+        
         engineDiv.innerHTML = `
             <img src="https://www.google.com/s2/favicons?domain=${displayName}" alt="${displayName}" class="search-engine-favicon">
-            <span>${displayName}</span>
+            <span class="search-engine-name" title="${displayName}">${displayName}</span>
             <div class="icon-group">
                 <span class="show-checkbox material-icons">${display ? 'check_box' : 'check_box_outline_blank'}</span>
                 <span class="delete-icon material-icons">delete</span>
             </div>
         `;
-    
+        
         const checkboxIcon = engineDiv.querySelector('.show-checkbox');
         if (display) {
-            checkboxIcon.classList.add('active'); 
-            createSecondarySearchBar(fullUrl, displayName); 
+            checkboxIcon.classList.add('active');
+            createSecondarySearchBar(fullUrl, displayName);
         }
     
         checkboxIcon.addEventListener('click', () => {
             const active = checkboxIcon.classList.toggle('active');
             checkboxIcon.textContent = active ? 'check_box' : 'check_box_outline_blank';
             saveCustomSearchEngines();
-
+    
             if (active) {
                 createSecondarySearchBar(fullUrl, displayName);
             } else {
@@ -1650,10 +1650,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     
         engineDiv.querySelector('.delete-icon').addEventListener('click', () => {
-            engineDiv.remove(); 
-            saveCustomSearchEngines(); 
-            removeSecondarySearchBar(displayName); 
-            updateAddButtonVisibility(); 
+            engineDiv.remove();
+            saveCustomSearchEngines();
+            removeSecondarySearchBar(displayName);
+            updateAddButtonVisibility();
         });
     
         engineDiv.dataset.fullUrl = fullUrl;

@@ -207,7 +207,7 @@ input[type="text"] {
     width: 200px;
     max-width: 90%;
     height: auto;
-    max-height: 80vh;
+    max-height: 90vh;
     background: rgba(20, 20, 20, 0.5); 
     backdrop-filter: blur(10px); 
     padding: 20px;
@@ -1215,21 +1215,26 @@ input:checked + .slider:before {
 .custom-search-engine {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-.custom-search-engine {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    justify-content: space-between;
+    padding: 5px 2px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .search-engine-favicon {
     width: 16px;
     height: 16px;
+    margin-right: 8px;
 }
 
+.search-engine-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 5px;
+}
 .show-checkbox {
     font-size: 20px; 
     color: #444; 

@@ -1,165 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Undulating Background Blobs</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,900');
-
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      background: #1F2024;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .blob-c {
-      min-height: 100vh;
-      overflow: hidden;
-      position: absolute;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      filter: blur(40px);
-    }
-
-    .shape-blob {
-      background: #26C3F9;
-      border-radius: 40% 50% 30% 40%;
-      animation: transform 18s ease-in-out infinite both alternate,
-                 movement_one 12s ease-in-out infinite both;
-      opacity: 0.7;
-      position: absolute;
-    }
-
-    .shape-blob.one {
-      background: #0066CC;
-      height: 180px;
-      width: 240px;
-      transform: translate(-150px, -150px) rotate(-180deg);
-      animation: transform 8s ease-in-out infinite both alternate, movement_two 20s ease-in-out infinite both;
-    }
-
-    .shape-blob.two {
-      background: #3399FF;
-      height: 160px;
-      width: 210px;
-      transform: translate(200px, -200px) rotate(-180deg);
-      animation: transform 10s ease-in-out infinite both alternate, movement_two 18s ease-in-out infinite both;
-    }
-
-    .shape-blob.three {
-      background: #33CCFF;
-      height: 140px;
-      width: 190px;
-      transform: translate(-220px, 220px) rotate(-180deg);
-      animation: transform 7s ease-in-out infinite both alternate, movement_two 23s ease-in-out infinite both;
-    }
-
-    .shape-blob.four {
-      background: #00BFFF;
-      height: 120px;
-      width: 160px;
-      transform: translate(250px, 250px) rotate(-180deg);
-      animation: transform 17s ease-in-out infinite both alternate, movement_two 13s ease-in-out infinite both;
-    }
-
-    .shape-blob.five {
-      background: #0099FF;
-      height: 100px;
-      width: 140px;
-      transform: translate(-300px, 100px) rotate(-180deg);
-      animation: transform 12s ease-in-out infinite both alternate, movement_two 18s ease-in-out infinite both;
-    }
-
-    .shape-blob.six {
-      background: #66CCFF;
-      height: 90px;
-      width: 120px;
-      transform: translate(300px, -100px) rotate(-180deg);
-      animation: transform 5s ease-in-out infinite both alternate, movement_two 14s ease-in-out infinite both;
-    }
-
-    .shape-blob.seven {
-      background: #99CCFF;
-      height: 80px;
-      width: 110px;
-      transform: translate(-350px, 200px) rotate(180deg);
-      animation: transform 11s ease-in-out infinite both alternate, movement_two 16s ease-in-out infinite both;
-    }
-
-    .shape-blob.eight {
-      background: #1E90FF;
-      height: 70px;
-      width: 100px;
-      transform: translate(350px, 200px) rotate(-180deg);
-      animation: transform 14s ease-in-out infinite both alternate, movement_two 9s ease-in-out infinite both;
-    }
-
-    .shape-blob.nine {
-      background: #4682B4;
-      height: 60px;
-      width: 80px;
-      transform: translate(-400px, -300px) rotate(-180deg);
-      animation: transform 9s ease-in-out infinite both alternate, movement_two 22s ease-in-out infinite both;
-    }
-
-    @keyframes transform {
-      0%, 100% { border-radius: 33% 67% 70% 30% / 30% 40% 70% 70%; }
-      20% { border-radius: 37% 63% 51% 49% / 37% 35% 35% 63%; }
-      40% { border-radius: 36% 64% 64% 36% / 64% 48% 52% 26%; }
-      60% { border-radius: 37% 63% 51% 49% / 30% 30% 70% 73%; }
-      80% { border-radius: 40% 60% 42% 58% / 51% 51% 49% 59%; }
-    }
-
-    @keyframes movement_one {
-      0%, 100% { transform: none; }
-      50% { transform: translate(50%, 20%) rotateY(10deg) scale(1); }
-    }
-
-    @keyframes movement_two {
-      0%, 500% { transform: none; }
-      50% { transform: translate(50%, 20%) rotate(-200deg) scale(1.3); }
-    }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 5em;
-      letter-spacing: 2px;
-      font-weight: 900;
-      color: white;
-      line-height: 0.9em;
-      position: relative;
-      z-index: 1;
-      text-shadow: 2px 3px 15px rgba(0,0,0,.15);
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salam</title>
+    <style>
+        .favicon {
+            filter: grayscale(100%);
+            width: 48px;
+            height: 48px;
+            margin-top: 20px;
+        }
+        .input-container {
+            margin: 20px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="blob-c">
-      <div class="shape-blob one"></div>
-      <div class="shape-blob two"></div>
-      <div class="shape-blob three"></div>
-      <div class="shape-blob four"></div>
-      <div class="shape-blob five"></div>
-      <div class="shape-blob six"></div>
-      <div class="shape-blob seven"></div>
-      <div class="shape-blob eight"></div>
-      <div class="shape-blob nine"></div>
+    <div class="input-container">
+        <label for="url-input">Bomba:</label>
+        <input type="text" id="url-input" placeholder="https://example.com">
+        <button onclick="showFavicon()">Boom</button>
     </div>
-    <h1>Undulating<br>Background<br>Blobs</h1>
-  </div>
+    <div id="favicon-container">
+    </div>
+
+    <script>
+        function showFavicon() {
+            const url = document.getElementById('url-input').value;
+            if (!url) {
+                alert("Please enter a valid URL.");
+                return;
+            }
+
+            try {
+                const domain = new URL(url).hostname;
+
+                const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+                
+                const faviconContainer = document.getElementById('favicon-container');
+                faviconContainer.innerHTML = `<img src="${faviconUrl}" alt="Favicon" class="favicon">`;
+
+            } catch (error) {
+                alert("Please enter a valid URL format, such as https://example.com");
+            }
+        }
+    </script>
 </body>
 </html>
