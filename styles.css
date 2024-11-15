@@ -1226,8 +1226,8 @@ input:checked + .slider:before {
     width: 16px;
     height: 16px;
     margin-right: 8px;
+    pointer-events: none; 
 }
-
 .search-engine-name {
     flex: 1;
     white-space: nowrap;
@@ -1325,6 +1325,12 @@ input:checked + .slider:before {
     width: 16px;
     height: 16px;
     margin-right: 5px;
+}
+.secondary-search-favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    pointer-events: none; 
 }
 
 .secondary-search-bar input[type="text"] {
