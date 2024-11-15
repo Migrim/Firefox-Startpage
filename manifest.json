@@ -1,12 +1,8 @@
 {
   "manifest_version": 2,
   "name": "New-Tab",
-  "version": "2.2",
+  "version": "2.3",
   "description": "Opens a clean glassmorphism Startpage when a new tab gets created",
-  "permissions": ["tabs", "activeTab"],
-  "background": {
-    "scripts": ["background.js"]
-  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
