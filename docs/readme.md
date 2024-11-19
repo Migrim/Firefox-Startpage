@@ -1,8 +1,7 @@
 # Add the Addon to your Browser
 
-[![Addon Link](https://img.shields.io/badge/Get%20the%20Addon-Firefox-brightgreen)](https://addons.mozilla.org/de/firefox/addon/new-browsertab/)
+[![Addon Link](https://img.shields.io/badge/Get%20the%20Addon-Firefox-brightgreen)](https://addons.mozilla.org/de/firefox/addon/new-browsertab/) [![Addon Link](https://img.shields.io/badge/Get%20the%20Addon-Chrome-blue)](https://chromewebstore.google.com/detail/new-tab/dbakgdldpaljegfelbdmnjnhdgdflkbf?authuser=0&hl=de)
 
-[![Addon Link](https://img.shields.io/badge/Get%20the%20Addon-Chrome-blue)](https://chromewebstore.google.com/detail/new-tab/dbakgdldpaljegfelbdmnjnhdgdflkbf?authuser=0&hl=de)
 
 # Dark Glassmorphism Startpage
 
